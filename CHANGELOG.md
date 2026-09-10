@@ -4,6 +4,23 @@ Schema versions and framework versions move independently. `schema_version` is
 what seeded instances depend on; only a breaking schema change bumps it, and a
 migration script ships alongside.
 
+## 1.2.2
+
+Patch. Adds one generated field; no schema change.
+
+`index.json` now carries `framework_version`, the version of the framework that
+generated it.
+
+Instances pin a moving major branch so that non-breaking fixes arrive
+automatically. The cost of that design is that the version which validated a
+given commit cannot be recovered afterwards, because the branch has moved. When
+a check changes and something that used to pass starts failing, there was no
+record to diff against. Stamping the version into the committed index closes
+that, and costs nothing.
+
+Note that `schema_version` and `framework_version` are deliberately independent:
+one says how the files are shaped, the other says which rules checked them.
+
 ## 1.2.1
 
 Patch. New warning only; no schema change and no behaviour change to existing

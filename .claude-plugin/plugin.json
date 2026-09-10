@@ -1,6 +1,6 @@
 {
   "name": "cairn",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "CAIRN: Competitive Analysis, Incremental Records, Notarised. Competitive intelligence as a governed git-native repository. Observed intel separated from interpretation, confidence and provenance enforced in CI, and a hard provenance gate on anything leaving the building.",
   "author": "DanB13",
   "homepage": "https://github.com/DanB13/cairn",

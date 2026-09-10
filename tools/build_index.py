@@ -19,6 +19,23 @@ import ci_lib as L  # noqa: E402
 from validate import DEFAULT_SHELF_LIFE  # noqa: E402
 
 
+def framework_version() -> str:
+    """Version of the framework that generated this index.
+
+    Instances pin a moving major branch, so the version that validated a given
+    commit is not recoverable afterwards: the branch will have moved. Stamping
+    it into the committed index is what makes a commit traceable to the rules
+    it was checked against.
+    """
+    here = os.path.dirname(os.path.abspath(__file__))
+    manifest = os.path.join(here, "..", ".claude-plugin", "plugin.json")
+    try:
+        with open(manifest, encoding="utf-8") as fh:
+            return json.load(fh).get("version") or "unknown"
+    except (OSError, ValueError):
+        return "unknown"
+
+
 def shelf_life(cfg: dict, signal_type: str) -> int:
     table = (cfg.get("shelf_life_days") or {})
     return table.get(signal_type,
@@ -131,6 +148,10 @@ def build(root: str) -> dict:
     return {
         "generated": L.today().isoformat(),
         "schema_version": 1,
+        # The data contract version above is independent of the framework
+        # version below. schema_version says how these files are shaped;
+        # framework_version says which rules checked them.
+        "framework_version": framework_version(),
         "instance": cfg.get("instance_name"),
         "profile": cfg.get("profile"),
         # Carried through so consumers get organisation context without parsing
