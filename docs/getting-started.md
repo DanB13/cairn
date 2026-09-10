@@ -3,7 +3,7 @@
 ## Try the framework without seeding anything
 
 ```bash
-git clone https://github.com/danboddington/cairn
+git clone https://github.com/DanB13/cairn
 cd cairn
 
 python3 tools/selftest.py

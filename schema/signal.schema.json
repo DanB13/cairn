@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danboddington/cairn/schema/signal.schema.json",
+  "$id": "https://github.com/DanB13/cairn/schema/signal.schema.json",
   "title": "Signal record",
   "description": "One observed claim, one file. New file per contribution means pull requests never conflict.",
   "type": "object",

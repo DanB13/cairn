@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danboddington/cairn/schema/profile.schema.json",
+  "$id": "https://github.com/DanB13/cairn/schema/profile.schema.json",
   "title": "Market profile",
   "description": "Closes the tier and lane vocabularies for one market. Ships in the public framework so market specifics never get hardcoded into the schema.",
   "type": "object",

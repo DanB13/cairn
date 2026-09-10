@@ -1,7 +1,7 @@
 # Competitive intelligence instance
 
 Private data repository built on
-[cairn](https://github.com/danboddington/cairn).
+[cairn](https://github.com/DanB13/cairn).
 
 **This repository must stay private.** It holds pricing intel, win and loss
 patterns and battlecards. See `SETUP.md`.

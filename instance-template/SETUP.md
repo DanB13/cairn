@@ -22,7 +22,7 @@ cd /path/to/ci-data && git init && git add . && git commit -m "Seed instance"
 ## 3. Attach the framework for tooling
 
 ```bash
-git clone https://github.com/danboddington/cairn .framework
+git clone https://github.com/DanB13/cairn .framework
 ```
 
 `.framework/` is gitignored. Alternatively install the plugin and let the skills

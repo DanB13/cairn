@@ -4,9 +4,9 @@
 # need a maintainer. A renamed field ships as a major version plus a migration
 # script, never as a quiet edit.
 
-/schema/            @danboddington
-/profiles/          @danboddington
-/tools/             @danboddington
-/skills/            @danboddington
-/.claude-plugin/    @danboddington
-/docs/migrations.md @danboddington
+/schema/            @DanB13
+/profiles/          @DanB13
+/tools/             @DanB13
+/skills/            @DanB13
+/.claude-plugin/    @DanB13
+/docs/migrations.md @DanB13

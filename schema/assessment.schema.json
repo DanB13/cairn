@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danboddington/cairn/schema/assessment.schema.json",
+  "$id": "https://github.com/DanB13/cairn/schema/assessment.schema.json",
   "title": "Assessment frontmatter",
   "description": "Interpretation layer. This is the ONLY vendor-scoped place where strategic reading, battlecards and objection handling are permitted. Collateral generation reads from here, never from vendor pages.",
   "type": "object",

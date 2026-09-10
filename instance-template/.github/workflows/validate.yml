@@ -21,7 +21,7 @@ jobs:
       - name: Check out the framework
         uses: actions/checkout@v4
         with:
-          repository: danboddington/cairn
+          repository: DanB13/cairn
           ref: v1
           path: .framework
 

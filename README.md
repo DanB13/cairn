@@ -57,7 +57,7 @@ tooling. Everything here is plain markdown, JSON Schema and dependency-free
 Python 3:
 
 ```bash
-git clone https://github.com/danboddington/cairn
+git clone https://github.com/DanB13/cairn
 python3 tools/validate.py fixtures
 ```
 
@@ -67,7 +67,7 @@ adopters are never stranded on an old copy.
 ## Quick start
 
 ```bash
-git clone https://github.com/danboddington/cairn
+git clone https://github.com/DanB13/cairn
 cd cairn
 
 python3 tools/selftest.py                  # 18 contract checks, proven to fire

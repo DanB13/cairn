@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danboddington/cairn/schema/config.schema.json",
+  "$id": "https://github.com/DanB13/cairn/schema/config.schema.json",
   "title": "Instance configuration",
   "description": "Per-instance settings. Lives in the PRIVATE data repo, never in the public framework.",
   "type": "object",

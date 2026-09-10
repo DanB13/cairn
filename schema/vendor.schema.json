@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danboddington/cairn/schema/vendor.schema.json",
+  "$id": "https://github.com/DanB13/cairn/schema/vendor.schema.json",
   "title": "Vendor page frontmatter",
   "description": "Descriptive layer. Holds observed intel only; interpretation lives in the paired assessment file.",
   "type": "object",

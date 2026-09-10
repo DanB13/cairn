@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/danboddington/cairn/schema/tiers.schema.json",
+  "$id": "https://github.com/DanB13/cairn/schema/tiers.schema.json",
   "title": "Tier index",
   "description": "Canonical answer to 'what do we track'. If any other file disagrees, this wins. Curator-owned via CODEOWNERS.",
   "type": "object",
