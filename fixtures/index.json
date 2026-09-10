@@ -1,0 +1,424 @@
+{
+  "generated": "2026-09-10",
+  "schema_version": 1,
+  "instance": "Fixture Instance",
+  "profile": "data-security",
+  "counts": {
+    "vendors": 4,
+    "signals": 9,
+    "assessments": 2
+  },
+  "attention": {
+    "overdue_vendors": [],
+    "vendors_without_assessment": [
+      "status-quo",
+      "veridian-labs"
+    ],
+    "open_contradictions": [
+      {
+        "claim": "sig-2026-09-08-northwind-secure-01",
+        "conflicts_with": [
+          "sig-2026-06-18-northwind-secure-01"
+        ]
+      }
+    ],
+    "stale_product_refs": []
+  },
+  "product": [
+    {
+      "name": "Fixture Product",
+      "owner": "fixture-curator",
+      "last_reviewed": "2026-09-01",
+      "reverify_by": "2026-12-01",
+      "overdue_days": 0,
+      "path": "product/our-product.md"
+    }
+  ],
+  "vendors": [
+    {
+      "slug": "helios-platform",
+      "name": "Helios Platform",
+      "aliases": [
+        "Helios"
+      ],
+      "tier": "platform-native",
+      "lanes": [
+        "saas-dlp",
+        "compliance-reporting"
+      ],
+      "flags": {
+        "dual_role": true,
+        "convergence": true,
+        "platform_native": true,
+        "status_quo": false
+      },
+      "cadence": "quarterly",
+      "status": "active",
+      "last_reviewed": "2026-08-20",
+      "data_as_of": "2026-08-20",
+      "reverify_by": "2026-11-20",
+      "overdue_days": 0,
+      "signal_count": 1,
+      "live_signal_count": 1,
+      "stale_signal_count": 0,
+      "latest_signal": "2026-08-20",
+      "open_contradictions": [],
+      "has_assessment": true,
+      "assessment_updated": "2026-08-21",
+      "threat_level": "critical",
+      "path": "vendors/helios-platform.md"
+    },
+    {
+      "slug": "northwind-secure",
+      "name": "Northwind Secure",
+      "aliases": [
+        "Northwind",
+        "NWS"
+      ],
+      "tier": "tier-1",
+      "lanes": [
+        "saas-dlp",
+        "dspm"
+      ],
+      "flags": {
+        "dual_role": false,
+        "convergence": true,
+        "platform_native": false,
+        "status_quo": false
+      },
+      "cadence": "weekly",
+      "status": "active",
+      "last_reviewed": "2026-09-01",
+      "data_as_of": "2026-08-28",
+      "reverify_by": "2026-12-01",
+      "overdue_days": 0,
+      "signal_count": 6,
+      "live_signal_count": 5,
+      "stale_signal_count": 0,
+      "latest_signal": "2026-09-08",
+      "open_contradictions": [
+        {
+          "claim": "sig-2026-09-08-northwind-secure-01",
+          "conflicts_with": [
+            "sig-2026-06-18-northwind-secure-01"
+          ]
+        }
+      ],
+      "has_assessment": true,
+      "assessment_updated": "2026-09-09",
+      "threat_level": "high",
+      "path": "vendors/northwind-secure.md"
+    },
+    {
+      "slug": "status-quo",
+      "name": "Status quo (do nothing)",
+      "aliases": [
+        "do-nothing",
+        "manual review"
+      ],
+      "tier": "status-quo",
+      "lanes": [
+        "saas-dlp"
+      ],
+      "flags": {
+        "dual_role": false,
+        "convergence": false,
+        "platform_native": false,
+        "status_quo": true
+      },
+      "cadence": "quarterly",
+      "status": "active",
+      "last_reviewed": "2026-09-02",
+      "data_as_of": "2026-09-02",
+      "reverify_by": "2026-12-02",
+      "overdue_days": 0,
+      "signal_count": 1,
+      "live_signal_count": 1,
+      "stale_signal_count": 0,
+      "latest_signal": "2026-09-02",
+      "open_contradictions": [],
+      "has_assessment": false,
+      "assessment_updated": null,
+      "threat_level": null,
+      "path": "vendors/status-quo.md"
+    },
+    {
+      "slug": "veridian-labs",
+      "name": "Veridian Labs",
+      "aliases": [],
+      "tier": "tier-3",
+      "lanes": [
+        "ai-data-governance"
+      ],
+      "flags": {
+        "dual_role": false,
+        "convergence": false,
+        "platform_native": false,
+        "status_quo": false
+      },
+      "cadence": "on-signal",
+      "status": "watch",
+      "last_reviewed": "2026-08-11",
+      "data_as_of": "2026-08-11",
+      "reverify_by": "2026-11-11",
+      "overdue_days": 0,
+      "signal_count": 1,
+      "live_signal_count": 1,
+      "stale_signal_count": 0,
+      "latest_signal": "2026-07-30",
+      "open_contradictions": [],
+      "has_assessment": false,
+      "assessment_updated": null,
+      "threat_level": null,
+      "path": "vendors/veridian-labs.md"
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig-2026-09-08-northwind-secure-01",
+      "vendor": "northwind-secure",
+      "date": "2026-09-08",
+      "type": "packaging",
+      "confidence": "confirmed",
+      "claim": "The Northwind Secure posture module is listed as a paid add-on priced separately from the Business tier.",
+      "lane": "dspm",
+      "origins": [
+        "northwind"
+      ],
+      "source_kinds": [
+        "vendor-primary"
+      ],
+      "contributor": "fixture-reviewer-a",
+      "supersedes": [],
+      "contradicts": [
+        "sig-2026-06-18-northwind-secure-01"
+      ],
+      "age_days": 2,
+      "shelf_life_days": 180,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-09-08-northwind-secure-01.md",
+      "superseded": false,
+      "in_conflict": true,
+      "contradicted_by": []
+    },
+    {
+      "id": "sig-2026-09-05-northwind-secure-01",
+      "vendor": "northwind-secure",
+      "date": "2026-09-05",
+      "type": "leadership",
+      "confidence": "rumour",
+      "claim": "Northwind Secure may be recruiting a chief revenue officer with enterprise experience.",
+      "lane": "saas-dlp",
+      "origins": [
+        "community-forum"
+      ],
+      "source_kinds": [
+        "community"
+      ],
+      "contributor": "fixture-reviewer-b",
+      "supersedes": [],
+      "contradicts": [],
+      "age_days": 5,
+      "shelf_life_days": 180,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-09-05-northwind-secure-01.md",
+      "superseded": false,
+      "in_conflict": false,
+      "contradicted_by": []
+    },
+    {
+      "id": "sig-2026-09-02-status-quo-01",
+      "vendor": "status-quo",
+      "date": "2026-09-02",
+      "type": "customer-loss",
+      "confidence": "confirmed",
+      "claim": "A mid-market evaluation closed with no purchase, the buyer electing to continue manual review for a further two quarters.",
+      "lane": "saas-dlp",
+      "origins": [
+        "internal-sales"
+      ],
+      "source_kinds": [
+        "first-hand"
+      ],
+      "contributor": "fixture-reviewer-a",
+      "supersedes": [],
+      "contradicts": [],
+      "age_days": 8,
+      "shelf_life_days": 365,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-09-02-status-quo-01.md",
+      "superseded": false,
+      "in_conflict": false,
+      "contradicted_by": []
+    },
+    {
+      "id": "sig-2026-08-22-northwind-secure-02",
+      "vendor": "northwind-secure",
+      "date": "2026-08-22",
+      "type": "funding",
+      "confidence": "likely",
+      "claim": "Northwind Secure raised a Series B of approximately 40 million US dollars.",
+      "lane": "saas-dlp",
+      "origins": [
+        "press-a",
+        "press-b"
+      ],
+      "source_kinds": [
+        "press",
+        "secondary"
+      ],
+      "contributor": "fixture-reviewer-b",
+      "supersedes": [],
+      "contradicts": [],
+      "age_days": 19,
+      "shelf_life_days": 180,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-08-22-northwind-secure-02.md",
+      "superseded": false,
+      "in_conflict": false,
+      "contradicted_by": []
+    },
+    {
+      "id": "sig-2026-08-20-helios-platform-01",
+      "vendor": "helios-platform",
+      "date": "2026-08-20",
+      "type": "packaging",
+      "confidence": "confirmed",
+      "claim": "Helios includes data protection controls in its top enterprise licence tier at no separate cost.",
+      "lane": "saas-dlp",
+      "origins": [
+        "helios"
+      ],
+      "source_kinds": [
+        "vendor-primary"
+      ],
+      "contributor": "fixture-curator",
+      "supersedes": [],
+      "contradicts": [],
+      "age_days": 21,
+      "shelf_life_days": 180,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-08-20-helios-platform-01.md",
+      "superseded": false,
+      "in_conflict": false,
+      "contradicted_by": []
+    },
+    {
+      "id": "sig-2026-08-15-northwind-secure-01",
+      "vendor": "northwind-secure",
+      "date": "2026-08-15",
+      "type": "pricing",
+      "confidence": "confirmed",
+      "claim": "Northwind Secure raised the Business tier list price to 22 US dollars per seat per month, billed annually.",
+      "lane": "saas-dlp",
+      "origins": [
+        "northwind"
+      ],
+      "source_kinds": [
+        "vendor-primary"
+      ],
+      "contributor": "fixture-reviewer-a",
+      "supersedes": [
+        "sig-2026-03-02-northwind-secure-01"
+      ],
+      "contradicts": [],
+      "age_days": 26,
+      "shelf_life_days": 180,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-08-15-northwind-secure-01.md",
+      "superseded": false,
+      "in_conflict": false,
+      "contradicted_by": []
+    },
+    {
+      "id": "sig-2026-07-30-veridian-labs-01",
+      "vendor": "veridian-labs",
+      "date": "2026-07-30",
+      "type": "product-launch",
+      "confidence": "likely",
+      "claim": "Veridian Labs launched a browser extension that flags sensitive data pasted into AI chat tools.",
+      "lane": "ai-data-governance",
+      "origins": [
+        "press-b",
+        "sector-newsletter"
+      ],
+      "source_kinds": [
+        "press",
+        "secondary"
+      ],
+      "contributor": "fixture-reviewer-b",
+      "supersedes": [],
+      "contradicts": [],
+      "age_days": 42,
+      "shelf_life_days": 270,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-07-30-veridian-labs-01.md",
+      "superseded": false,
+      "in_conflict": false,
+      "contradicted_by": []
+    },
+    {
+      "id": "sig-2026-06-18-northwind-secure-01",
+      "vendor": "northwind-secure",
+      "date": "2026-06-18",
+      "type": "packaging",
+      "confidence": "likely",
+      "claim": "The Northwind Secure posture module is bundled into the Business tier at no extra cost.",
+      "lane": "dspm",
+      "origins": [
+        "fixture-analyst",
+        "press-a"
+      ],
+      "source_kinds": [
+        "analyst-tier1",
+        "press"
+      ],
+      "contributor": "fixture-reviewer-a",
+      "supersedes": [],
+      "contradicts": [],
+      "age_days": 84,
+      "shelf_life_days": 180,
+      "stale": false,
+      "archived": false,
+      "path": "signals/sig-2026-06-18-northwind-secure-01.md",
+      "superseded": false,
+      "in_conflict": true,
+      "contradicted_by": [
+        "sig-2026-09-08-northwind-secure-01"
+      ]
+    },
+    {
+      "id": "sig-2026-03-02-northwind-secure-01",
+      "vendor": "northwind-secure",
+      "date": "2026-03-02",
+      "type": "pricing",
+      "confidence": "confirmed",
+      "claim": "Northwind Secure list price for the Business tier is 18 US dollars per seat per month, billed annually.",
+      "lane": "saas-dlp",
+      "origins": [
+        "northwind"
+      ],
+      "source_kinds": [
+        "vendor-primary"
+      ],
+      "contributor": "fixture-reviewer-a",
+      "supersedes": [],
+      "contradicts": [],
+      "age_days": 192,
+      "shelf_life_days": 180,
+      "stale": true,
+      "archived": false,
+      "path": "signals/sig-2026-03-02-northwind-secure-01.md",
+      "superseded": true,
+      "in_conflict": false,
+      "contradicted_by": []
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danboddington/cairn/schema/tiers.schema.json",
+  "title": "Tier index",
+  "description": "Canonical answer to 'what do we track'. If any other file disagrees, this wins. Curator-owned via CODEOWNERS.",
+  "type": "object",
+  "required": ["schema_version", "profile", "vendors"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
+    "profile": { "type": "string", "description": "Active market profile filename stem, e.g. data-security." },
+    "vendors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slug", "tier"],
+        "additionalProperties": false,
+        "properties": {
+          "slug": { "$ref": "common.schema.json#/$defs/slug" },
+          "tier": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

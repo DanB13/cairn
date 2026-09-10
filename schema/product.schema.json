@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danboddington/cairn/schema/product.schema.json",
+  "title": "Own product reference",
+  "description": "Your own product, the anchor for --compare. Has an owner and a shelf life because a stale self-description produces confidently wrong comparisons.",
+  "type": "object",
+  "required": ["schema_version", "name", "owner", "last_reviewed", "reverify_by", "lanes"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
+    "name": { "type": "string" },
+    "owner": { "$ref": "common.schema.json#/$defs/contributor" },
+    "last_reviewed": { "$ref": "common.schema.json#/$defs/date" },
+    "reverify_by": { "$ref": "common.schema.json#/$defs/date" },
+    "lanes": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+  }
+}

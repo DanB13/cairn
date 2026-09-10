@@ -1,0 +1,16 @@
+# Instance repository. Data BELONGS here, so nothing under vendors/, signals/,
+# assessments/ or product/ is ignored. This repository must be private: see
+# SETUP.md and the pre-push hook.
+
+# The framework, checked out as a sibling for tooling.
+.framework/
+
+# Generated collateral. Regenerate it rather than committing it, so a stale deck
+# can never outlive the provenance gate that approved it.
+/out/
+*.pptx
+*.provenance.md
+
+__pycache__/
+*.pyc
+.DS_Store

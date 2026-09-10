@@ -1,0 +1,60 @@
+# Synthetic instance used as the framework's own test suite.
+# Every vendor here is invented. No real competitive intel lives in this repo.
+schema_version: 1
+instance_name: Fixture Instance
+profile: data-security
+
+governance:
+  curators:
+    - fixture-curator
+  curator_deputy:
+    - fixture-deputy
+  reviewers:
+    - fixture-reviewer-a
+    - fixture-reviewer-b
+  queue_ttl_days: 30
+  triage_order: tier-weighted
+
+paths:
+  vendors: vendors
+  signals: signals
+  assessments: assessments
+  archive: archive
+  product: product
+  brand: brand
+
+shelf_life_days:
+  pricing: 180
+  packaging: 180
+  m-and-a: 90
+  funding: 180
+  leadership: 180
+  headcount: 365
+  product-launch: 270
+  product-change: 270
+  positioning: 270
+  messaging: 270
+  partnership: 365
+  certification: 545
+default_shelf_life_days: 365
+
+retention:
+  recent_moves_window_days: 365
+  archive_after_days: 730
+
+style:
+  forbid_em_dash: true
+  forbid_patterns: []
+  max_claim_words: 80
+
+collateral:
+  min_confidence: likely
+  require_provenance_appendix: true
+  max_claim_age_days: 180
+
+sources:
+  trusted_origins:
+    - northwind
+    - helios
+  analyst_tier1:
+    - fixture-analyst

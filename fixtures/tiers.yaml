@@ -1,0 +1,15 @@
+schema_version: 1
+profile: data-security
+vendors:
+  - slug: northwind-secure
+    tier: tier-1
+    note: Converged competitor, appears in most live deals.
+  - slug: helios-platform
+    tier: platform-native
+    note: Dual role. Bundled capability and an integration partner.
+  - slug: veridian-labs
+    tier: tier-3
+    note: Early stage, escalate on signal.
+  - slug: status-quo
+    tier: status-quo
+    note: Manual review and existing tooling. Not a vendor, still loses us deals.

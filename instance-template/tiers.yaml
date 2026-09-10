@@ -1,0 +1,8 @@
+# Canonical answer to "what do we track". If a vendor page disagrees with this
+# file, this file wins. Curator-owned: see .github/CODEOWNERS.
+schema_version: 1
+profile: generic
+vendors:
+  - slug: example-vendor
+    tier: tier-2
+    note: Replace with your own coverage list.

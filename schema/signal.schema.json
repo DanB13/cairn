@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danboddington/cairn/schema/signal.schema.json",
+  "title": "Signal record",
+  "description": "One observed claim, one file. New file per contribution means pull requests never conflict.",
+  "type": "object",
+  "required": [
+    "schema_version", "id", "vendor", "date", "filed",
+    "type", "confidence", "claim", "sources", "contributor"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
+    "id": {
+      "type": "string",
+      "pattern": "^sig-[0-9]{4}-[0-9]{2}-[0-9]{2}-[a-z0-9-]+$",
+      "description": "sig-YYYY-MM-DD-<vendor-slug>-<nn>. Must match the filename stem."
+    },
+    "vendor": { "$ref": "common.schema.json#/$defs/slug" },
+    "date": {
+      "$ref": "common.schema.json#/$defs/date",
+      "description": "When the observed thing happened or was true. Drives shelf life."
+    },
+    "filed": {
+      "$ref": "common.schema.json#/$defs/date",
+      "description": "When it entered the repository."
+    },
+    "type": { "$ref": "common.schema.json#/$defs/signal_type" },
+    "confidence": { "$ref": "common.schema.json#/$defs/confidence" },
+    "claim": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 600,
+      "description": "Observed fact, descriptive only. No implications, no recommendation."
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "common.schema.json#/$defs/source" }
+    },
+    "contributor": { "$ref": "common.schema.json#/$defs/contributor" },
+    "lane": { "type": "string" },
+    "supersedes": { "type": "array", "items": { "type": "string" } },
+    "contradicts": { "type": "array", "items": { "type": "string" } },
+    "collateral_safe": {
+      "type": "boolean",
+      "description": "Optional explicit override to exclude from outbound collateral even when it would otherwise pass the gate."
+    }
+  }
+}

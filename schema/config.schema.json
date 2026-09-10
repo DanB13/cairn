@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danboddington/cairn/schema/config.schema.json",
+  "title": "Instance configuration",
+  "description": "Per-instance settings. Lives in the PRIVATE data repo, never in the public framework.",
+  "type": "object",
+  "required": ["schema_version", "instance_name", "profile", "governance", "paths"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
+    "instance_name": { "type": "string" },
+    "profile": { "type": "string" },
+    "governance": {
+      "type": "object",
+      "required": ["curators", "reviewers"],
+      "additionalProperties": false,
+      "properties": {
+        "curators": {
+          "type": "array", "minItems": 1, "items": { "type": "string" },
+          "description": "Own tiering, structure and schema changes. Low frequency, strategic."
+        },
+        "curator_deputy": { "type": "array", "items": { "type": "string" } },
+        "reviewers": {
+          "type": "array", "minItems": 1, "items": { "type": "string" },
+          "description": "Own the pull request queue. High frequency, clerical, deliberately plural."
+        },
+        "queue_ttl_days": {
+          "type": "integer", "minimum": 1, "default": 30,
+          "description": "Unreviewed submissions auto-close after this many days. Stale intel should expire, not queue."
+        },
+        "triage_order": {
+          "type": "string", "enum": ["newest-first", "tier-weighted"], "default": "tier-weighted"
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "required": ["vendors", "signals", "assessments", "archive"],
+      "additionalProperties": false,
+      "properties": {
+        "vendors": { "type": "string" },
+        "signals": { "type": "string" },
+        "assessments": { "type": "string" },
+        "archive": { "type": "string" },
+        "product": { "type": "string" },
+        "brand": { "type": "string" }
+      }
+    },
+    "shelf_life_days": {
+      "type": "object",
+      "description": "Per signal type. Absent types fall back to default_days.",
+      "additionalProperties": { "type": "integer", "minimum": 1 }
+    },
+    "default_shelf_life_days": { "type": "integer", "minimum": 1, "default": 365 },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recent_moves_window_days": { "type": "integer", "minimum": 30, "default": 365 },
+        "archive_after_days": { "type": "integer", "minimum": 90, "default": 730 }
+      }
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "forbid_em_dash": { "type": "boolean", "default": true },
+        "forbid_patterns": { "type": "array", "items": { "type": "string" } },
+        "max_claim_words": { "type": "integer", "minimum": 10, "default": 80 }
+      }
+    },
+    "collateral": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min_confidence": {
+          "type": "string", "enum": ["confirmed", "likely"], "default": "likely",
+          "description": "Rumour can never reach outbound collateral. This sets the floor above that."
+        },
+        "require_provenance_appendix": { "type": "boolean", "default": true },
+        "max_claim_age_days": { "type": "integer", "minimum": 1, "default": 180 }
+      }
+    },
+    "sources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "trusted_origins": { "type": "array", "items": { "type": "string" } },
+        "analyst_tier1": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

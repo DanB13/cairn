@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danboddington/cairn/schema/profile.schema.json",
+  "title": "Market profile",
+  "description": "Closes the tier and lane vocabularies for one market. Ships in the public framework so market specifics never get hardcoded into the schema.",
+  "type": "object",
+  "required": ["schema_version", "name", "tiers", "lanes"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "tiers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "cadence"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "label": { "type": "string" },
+          "cadence": { "$ref": "common.schema.json#/$defs/cadence" },
+          "deep_dive": { "type": "boolean" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "lanes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "label"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+          "label": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

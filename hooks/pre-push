@@ -1,0 +1,28 @@
+#!/bin/sh
+# Guardrail against publishing seeded competitive intelligence.
+#
+# Install into an instance repository:
+#   cp .framework/hooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push
+#
+# The same check runs in CI, so removing this hook does not remove the control.
+# It only makes the failure later and more public.
+
+set -e
+
+FRAMEWORK="${CI_FRAMEWORK_PATH:-.framework}"
+
+if [ ! -f "$FRAMEWORK/tools/check_visibility.py" ]; then
+  echo "pre-push: framework tools not found at $FRAMEWORK; skipping checks." >&2
+  echo "pre-push: set CI_FRAMEWORK_PATH or vendor the framework to re-enable." >&2
+  exit 0
+fi
+
+if ! python3 "$FRAMEWORK/tools/check_visibility.py" . ; then
+  echo "" >&2
+  echo "pre-push BLOCKED: refusing to push a seeded instance to a public repo." >&2
+  exit 1
+fi
+
+if [ -f config.yaml ]; then
+  python3 "$FRAMEWORK/tools/validate.py" .
+fi

@@ -1,0 +1,43 @@
+# Baseline profile. Start here, copy to a new file, and close the lane
+# vocabulary around your own market.
+schema_version: 1
+name: generic
+description: Market-neutral starting point with a minimal lane vocabulary.
+
+tiers:
+  - id: tier-1
+    label: Direct
+    cadence: weekly
+    deep_dive: true
+    description: Head-to-head platform competitors. Full pages, highest cadence.
+  - id: tier-2
+    label: Specialist
+    cadence: monthly
+    deep_dive: true
+    description: Single-lane competitors, grouped by lane.
+  - id: tier-3
+    label: Emerging / Watch
+    cadence: on-signal
+    deep_dive: false
+    description: Thin pages, escalate on signal.
+  - id: platform-native
+    label: Platform / Native
+    cadence: quarterly
+    deep_dive: true
+    description: Capability bundled into a platform the buyer already owns.
+  - id: oem-partner
+    label: OEM / Partner
+    cadence: quarterly
+    deep_dive: false
+    description: Sells through or alongside; often dual-role.
+  - id: status-quo
+    label: Status quo
+    cadence: quarterly
+    deep_dive: true
+    description: Do nothing, or existing in-house tooling. Not a vendor, still a competitor.
+
+lanes:
+  - id: core
+    label: Core product
+  - id: adjacent
+    label: Adjacent capability

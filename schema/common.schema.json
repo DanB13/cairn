@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danboddington/cairn/schema/common.schema.json",
+  "title": "Shared definitions",
+  "$defs": {
+    "schema_version": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1,
+      "description": "Major schema version. Bumped only for breaking changes; a migration script must ship alongside."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "minLength": 2,
+      "maxLength": 64,
+      "description": "Stable machine identity. LOCKED: never change once seeded; renames are a new slug plus status merged."
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["confirmed", "likely", "rumour"],
+      "description": "Confidence AT FILING TIME. Never asserts current truth; always read alongside date."
+    },
+    "signal_type": {
+      "type": "string",
+      "enum": [
+        "pricing", "packaging", "product-launch", "product-change",
+        "positioning", "messaging", "funding", "m-and-a",
+        "leadership", "headcount", "partnership", "certification",
+        "customer-win", "customer-loss", "analyst", "incident",
+        "legal", "other"
+      ]
+    },
+    "source_kind": {
+      "type": "string",
+      "enum": [
+        "vendor-primary", "analyst-tier1", "first-hand",
+        "press", "secondary", "community"
+      ],
+      "description": "vendor-primary, analyst-tier1 and first-hand are the only kinds that can support a confirmed claim."
+    },
+    "source": {
+      "type": "object",
+      "required": ["kind", "origin", "accessed"],
+      "additionalProperties": false,
+      "properties": {
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "kind": { "$ref": "common.schema.json#/$defs/source_kind" },
+        "origin": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Originating publication or party, slug-like. Two rewrites of one story share an origin and do NOT count as independent."
+        },
+        "accessed": { "$ref": "common.schema.json#/$defs/date" },
+        "note": { "type": "string" }
+      }
+    },
+    "cadence": {
+      "type": "string",
+      "enum": ["weekly", "monthly", "quarterly", "on-signal"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "watch", "archived", "merged"]
+    },
+    "contributor": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Identity as recorded at filing. Git commit authorship remains the authoritative record."
+    }
+  }
+}

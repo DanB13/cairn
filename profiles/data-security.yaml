@@ -1,0 +1,72 @@
+# Data security profile: SaaS data protection, DSPM, DLP and neighbours.
+#
+# Three things are first-class here rather than optional, because in this
+# market they are structural: platform-native competition (capability bundled
+# into a suite the buyer already pays for), dual-role vendors (the hyperscaler
+# is simultaneously a competitor and the platform you integrate with), and
+# convergence across lanes.
+schema_version: 1
+name: data-security
+description: SaaS data protection, DSPM, DLP, insider risk and adjacent lanes.
+
+tiers:
+  - id: tier-1
+    label: Direct
+    cadence: weekly
+    deep_dive: true
+    description: Head-to-head platform competitors appearing in live deals.
+  - id: tier-2
+    label: Specialist
+    cadence: monthly
+    deep_dive: true
+    description: Strong in one lane, not a full platform alternative.
+  - id: tier-3
+    label: Emerging / Watch
+    cadence: on-signal
+    deep_dive: false
+    description: Early stage or newly adjacent. Escalate on signal.
+  - id: platform-native
+    label: Platform / Native
+    cadence: quarterly
+    deep_dive: true
+    description: >
+      Bundled platform capability. Frequently the real alternative in a deal
+      even though it never appears on a vendor shortlist.
+  - id: oem-partner
+    label: OEM / Partner
+    cadence: quarterly
+    deep_dive: false
+    description: Channel or embedded relationships, usually dual-role.
+  - id: status-quo
+    label: Status quo
+    cadence: quarterly
+    deep_dive: true
+    description: >
+      Do nothing, manual review, or existing tooling. Tracked as a competitor
+      because it wins deals.
+
+lanes:
+  - id: saas-dlp
+    label: SaaS DLP
+    description: Data loss prevention across SaaS applications.
+  - id: dspm
+    label: DSPM
+    description: Data security posture management.
+  - id: insider-risk
+    label: Insider risk
+  - id: casb
+    label: CASB
+    description: Cloud access security broker.
+  - id: data-discovery
+    label: Data discovery and classification
+  - id: access-governance
+    label: Data access governance
+  - id: compliance-reporting
+    label: Compliance and reporting
+  - id: ai-data-governance
+    label: AI data governance
+    description: Controls over data reaching AI and LLM tooling.
+  - id: email-security
+    label: Email security
+  - id: endpoint-dlp
+    label: Endpoint DLP

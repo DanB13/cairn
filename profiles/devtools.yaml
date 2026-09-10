@@ -1,0 +1,48 @@
+# Developer tooling profile. Second worked example, to show that the framework
+# is not shaped around any one market.
+schema_version: 1
+name: devtools
+description: Developer tooling, CI/CD, observability and platform engineering.
+
+tiers:
+  - id: tier-1
+    label: Direct
+    cadence: weekly
+    deep_dive: true
+  - id: tier-2
+    label: Specialist
+    cadence: monthly
+    deep_dive: true
+  - id: tier-3
+    label: Emerging / Watch
+    cadence: on-signal
+    deep_dive: false
+  - id: platform-native
+    label: Platform / Native
+    cadence: quarterly
+    deep_dive: true
+    description: Bundled into the cloud or source host the team already uses.
+  - id: open-source
+    label: Open source
+    cadence: monthly
+    deep_dive: true
+    description: Self-hosted alternatives competing on cost and control.
+  - id: status-quo
+    label: Status quo
+    cadence: quarterly
+    deep_dive: true
+    description: Home-grown scripts and internal platforms.
+
+lanes:
+  - id: ci-cd
+    label: CI and CD
+  - id: observability
+    label: Observability
+  - id: iac
+    label: Infrastructure as code
+  - id: secrets
+    label: Secrets management
+  - id: code-review
+    label: Code review and quality
+  - id: developer-portal
+    label: Developer portals

@@ -1,0 +1,22 @@
+# Root-anchored data paths. If somebody seeds an instance inside a clone of the
+# public framework by mistake, git refuses to see the data. The synthetic
+# fixtures under fixtures/ are unaffected because every pattern here is anchored
+# to the repository root.
+/config.yaml
+/tiers.yaml
+/index.json
+/vendors/
+/signals/
+/assessments/
+/archive/
+/product/
+/brand/
+
+# Generated collateral and provenance appendices.
+/out/
+*.provenance.md
+
+__pycache__/
+*.pyc
+.DS_Store
+.venv/

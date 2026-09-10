@@ -1,0 +1,19 @@
+# Instance ownership. This file is what makes governance mechanical rather than
+# conventional, and it is the split recommended in the review: Curators own
+# structure at low frequency, Reviewers own the queue at high frequency.
+#
+# Replace the placeholders with real GitHub handles, then turn on branch
+# protection for the default branch with "Require review from Code Owners".
+# Without branch protection this file is documentation, not a control.
+
+# Curators: tiering, structure, configuration. Low frequency, strategic.
+/tiers.yaml          @CURATOR @CURATOR_DEPUTY
+/config.yaml         @CURATOR @CURATOR_DEPUTY
+/.github/            @CURATOR
+/product/            @PRODUCT_OWNER @CURATOR
+
+# Reviewers: the intel queue. High frequency, clerical, deliberately plural so
+# review never depends on one person being available.
+/signals/            @REVIEWERS
+/vendors/            @REVIEWERS
+/assessments/        @REVIEWERS

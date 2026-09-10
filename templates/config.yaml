@@ -1,0 +1,62 @@
+# Instance configuration. Lives in the PRIVATE data repo only.
+schema_version: 1
+instance_name: Replace Me
+profile: generic
+
+governance:
+  # Curators own tiering, structure and schema changes. Low frequency, strategic.
+  curators:
+    - unassigned
+  curator_deputy:
+    - unassigned
+  # Reviewers own the pull request queue. High frequency, clerical, plural on
+  # purpose so review does not depend on one person being available.
+  reviewers:
+    - unassigned
+  queue_ttl_days: 30
+  triage_order: tier-weighted
+
+paths:
+  vendors: vendors
+  signals: signals
+  assessments: assessments
+  archive: archive
+  product: product
+  brand: brand
+
+# Shelf life per signal type, in days. Freshness is per data type because
+# pricing goes stale far faster than a certification.
+shelf_life_days:
+  pricing: 180
+  packaging: 180
+  m-and-a: 90
+  funding: 180
+  leadership: 180
+  headcount: 365
+  product-launch: 270
+  product-change: 270
+  positioning: 270
+  messaging: 270
+  partnership: 365
+  certification: 545
+default_shelf_life_days: 365
+
+retention:
+  recent_moves_window_days: 365
+  archive_after_days: 730
+
+style:
+  forbid_em_dash: true
+  forbid_patterns: []
+  max_claim_words: 80
+
+collateral:
+  # Rumour can never reach outbound collateral. This is the floor above that.
+  min_confidence: likely
+  require_provenance_appendix: true
+  max_claim_age_days: 180
+
+sources:
+  trusted_origins: []
+  # Only these origins may be tagged analyst-tier1.
+  analyst_tier1: []

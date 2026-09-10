@@ -1,0 +1,60 @@
+name: content contract
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Weekly freshness sweep. Warnings surface as a job summary rather than a
+    # failure, so decay becomes visible without blocking work.
+    - cron: "0 8 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out the framework
+        uses: actions/checkout@v4
+        with:
+          repository: OWNER/competitor-intelligence
+          ref: v1
+          path: .framework
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # This repository must never be public. The pre-push hook catches it
+      # locally; this catches it when somebody has removed the hook.
+      - name: Refuse to run in a public repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 .framework/tools/check_visibility.py .
+
+      - name: Validate the content contract
+        run: python3 .framework/tools/validate.py .
+
+      - name: Index is current
+        run: python3 .framework/tools/build_index.py . --check
+
+      - name: Freshness report
+        if: always()
+        run: |
+          python3 .framework/tools/validate.py . 2>&1 \
+            | grep '^warning' > warnings.txt || true
+          if [ -s warnings.txt ]; then
+            {
+              echo "### Freshness and contract warnings"
+              echo
+              echo '```'
+              cat warnings.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No warnings." >> "$GITHUB_STEP_SUMMARY"
+          fi

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/danboddington/cairn/schema/assessment.schema.json",
+  "title": "Assessment frontmatter",
+  "description": "Interpretation layer. This is the ONLY vendor-scoped place where strategic reading, battlecards and objection handling are permitted. Collateral generation reads from here, never from vendor pages.",
+  "type": "object",
+  "required": ["schema_version", "vendor", "updated", "author", "review_by"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
+    "vendor": { "$ref": "common.schema.json#/$defs/slug" },
+    "updated": { "$ref": "common.schema.json#/$defs/date" },
+    "author": { "$ref": "common.schema.json#/$defs/contributor" },
+    "review_by": { "$ref": "common.schema.json#/$defs/date" },
+    "threat_level": {
+      "type": "string",
+      "enum": ["critical", "high", "moderate", "low", "watch"]
+    },
+    "decisions": {
+      "type": "array",
+      "description": "The durable decision trail. Without this, reasoning evaporates with chat output.",
+      "items": {
+        "type": "object",
+        "required": ["date", "decision", "author"],
+        "additionalProperties": false,
+        "properties": {
+          "date": { "$ref": "common.schema.json#/$defs/date" },
+          "decision": { "type": "string", "minLength": 5 },
+          "rationale": { "type": "string" },
+          "author": { "$ref": "common.schema.json#/$defs/contributor" },
+          "signals": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
