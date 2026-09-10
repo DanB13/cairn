@@ -128,14 +128,26 @@ def _parse_block(toks, i, indent):
         key, _, rest = content.partition(":")
         key = key.strip()
         rest = rest.strip()
-        if rest in ("|", ">"):
+        if rest in ("|", ">", "|-", ">-"):
             block, j = [], i + 1
             while j < len(toks) and toks[j][0] > indent:
                 block.append(toks[j][1])
                 j += 1
-            sep = "\n" if rest == "|" else " "
-            mapping[key] = sep.join(block)
+            sep = "\n" if rest[0] == "|" else " "
+            text = sep.join(block)
+            # YAML chomping. Default ("clip") keeps a single trailing newline;
+            # the "-" suffix ("strip") removes it. Getting this wrong is
+            # invisible without PyYAML installed, which is exactly how it
+            # reached CI the first time.
+            if not rest.endswith("-"):
+                text += "\n"
+            mapping[key] = text
             i = j
+        elif rest in ("|+", ">+"):
+            raise FrontmatterError(
+                f"line {ln}: 'keep' chomping ({rest}) is outside the supported "
+                f"subset; use {rest[0]} or {rest[0]}- instead"
+            )
         elif rest == "":
             if i + 1 < len(toks) and toks[i + 1][0] > indent:
                 child_indent = toks[i + 1][0]

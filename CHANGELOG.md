@@ -4,6 +4,24 @@ Schema versions and framework versions move independently. `schema_version` is
 what seeded instances depend on; only a breaking schema change bumps it, and a
 migration script ships alongside.
 
+## 1.0.1
+
+Bug fix. No schema change; `schema_version` remains 1.
+
+- The strict frontmatter parser did not implement YAML chomping, so `|` and `>`
+  block scalars lost the trailing newline PyYAML produces. Any profile or config
+  using a folded description therefore failed the PyYAML cross-check. Clip and
+  strip chomping are now both handled, and `|+` / `>+` are rejected with a clear
+  message rather than mis-parsed.
+- `tools/selftest.py` now says out loud when PyYAML is absent, because the
+  cross-check silently skips in that case and a local run is then weaker than
+  CI. That gap is how the chomping bug reached the pipeline.
+- Added `tools/requirements-dev.txt` for the cross-check dependency.
+
+`v1.0.0` is left in place rather than retagged. It has failing CI and is
+superseded by this release: both tags stand, dated, which is the same rule the
+content contract applies to contradictory claims.
+
 ## 1.0.0
 
 Initial release as CAIRN (Competitive Analysis: Incremental Records,

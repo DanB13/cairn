@@ -1,0 +1,8 @@
+# The validators are deliberately dependency-free, so a cloned instance can be
+# checked with nothing installed.
+#
+# PyYAML is needed only for the frontmatter cross-check: ci_lib compares its
+# strict subset parser against PyYAML and fails when they disagree, which
+# catches frontmatter drifting outside the supported subset. CI installs it, so
+# install it locally too or your runs are weaker than the pipeline.
+pyyaml>=6.0

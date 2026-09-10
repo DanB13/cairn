@@ -303,6 +303,18 @@ def run_case(name, mutate, expected, level):
 
 
 def main() -> int:
+    # The PyYAML cross-check in ci_lib only runs when PyYAML is installed, so a
+    # local run without it is strictly weaker than CI. Say so rather than
+    # letting a green local run imply a green pipeline.
+    try:
+        import yaml  # noqa: F401
+        print("PyYAML present: frontmatter cross-check is ACTIVE.\n")
+    except ImportError:
+        print("WARNING: PyYAML is not installed, so the frontmatter "
+              "cross-check is SKIPPED.")
+        print("         This run is weaker than CI. Install it with:")
+        print("         python3 -m pip install -r tools/requirements-dev.txt\n")
+
     print("Baseline: unmodified fixtures must validate clean.")
     buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
