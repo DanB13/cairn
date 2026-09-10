@@ -92,6 +92,23 @@ sides is deliberately conservative: the framework's own fixtures demonstrate it,
 where a June claim that a module is bundled and a September claim that it is a
 paid add-on are both withheld.
 
+## 5b. Gap sections are measured against a fixed yardstick
+
+**Rule.** A tier 1 vendor page's gap section must address every criterion in
+`organisation.icp.must_have_criteria`, quoting each verbatim, including where the
+criterion is not a gap. Warning, not error.
+
+**Why.** The criteria are the yardstick every competitor is measured against. A
+criterion missing from a gap section is not a neutral omission: it means that
+vendor was never assessed on it, while the page reads as complete. Recording
+"not a gap" is as useful as recording a gap, because it stops an assumed
+advantage surviving unexamined.
+
+This matters most when the criteria list changes. Without the check, every
+existing page keeps measuring against the old list and nothing says so.
+
+Lower tiers are exempt. A thin page should stay thin.
+
 ## 6. Untaggable claims are reported, never dropped
 
 **Rule.** A claim that cannot be given a confidence and a source is refused with

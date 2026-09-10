@@ -4,6 +4,24 @@ Schema versions and framework versions move independently. `schema_version` is
 what seeded instances depend on; only a breaking schema change bumps it, and a
 migration script ships alongside.
 
+## 1.2.1
+
+Patch. New warning only; no schema change and no behaviour change to existing
+passing instances beyond the new check.
+
+Found while revising an instance's buyer criteria after its market turned out to
+be different from the one it was set up for. Changing
+`organisation.icp.must_have_criteria` left every vendor page silently measuring
+gaps against the old list, and nothing detected it.
+
+- Tier 1 vendor pages now warn when the "Gaps observed" section does not address
+  every stated buyer criterion, matched on the criterion phrase verbatim. Quoting
+  it is the point: it keeps gap sections mechanically comparable, and it makes a
+  criteria change visible rather than silent.
+- Warns when a tier 1 page has no gaps section at all.
+- Lower tiers are exempt, so thin pages stay thin.
+- Contract checks: 40, up from 37.
+
 ## 1.2.0
 
 Coverage and pages are now decoupled. No schema change; `schema_version`

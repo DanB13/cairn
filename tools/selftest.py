@@ -335,6 +335,31 @@ CASES = [
         "warning",
     ),
     (
+        "a tier-1 gap section must address every buyer criterion",
+        lambda r: edit(r, os.path.join("vendors", "northwind-secure.md"),
+                       "- **remediation workflow**: unresolved.",
+                       "- (criterion deliberately removed for the test) "
+                       "unresolved."),
+        r"warning.*does not address the buyer criterion 'remediation workflow'",
+        "warning",
+    ),
+    (
+        "a missing gaps section on a tier-1 page warns",
+        lambda r: edit(r, os.path.join("vendors", "northwind-secure.md"),
+                       "## Gaps observed against stated buyer criteria",
+                       "## Things we noticed"),
+        r"warning.*no 'Gaps observed' section found on a tier-1 page",
+        "warning",
+    ),
+    (
+        "criteria coverage is not demanded of lower tiers",
+        lambda r: edit(r, os.path.join("vendors", "veridian-labs.md"),
+                       "## Gaps observed against stated buyer criteria",
+                       "## Things we noticed"),
+        None,
+        "clean",
+    ),
+    (
         "instance profiles override framework profiles",
         lambda r: (
             instance_profile(r, "data-security", "instance-only-lane"),

@@ -40,10 +40,18 @@ two regional resellers.
 
 ## Gaps observed against stated buyer criteria
 
-- No endpoint coverage. Buyers in two observed evaluations named endpoint DLP as
-  a requirement (first-hand, 2026-07-14).
-- No published data residency option for the EU. Criterion raised by one
-  regulated buyer (first-hand, 2026-06-30).
+Every criterion in `organisation.icp.must_have_criteria` is addressed, including
+where it is not a gap. An unaddressed criterion means the vendor was never
+assessed on it.
+
+- **endpoint coverage**: absent. Buyers in two observed evaluations named
+  endpoint DLP as a requirement (first-hand, 2026-07-14).
+- **eu data residency**: no published option. Criterion raised by one regulated
+  buyer (first-hand, 2026-06-30).
+- **cross-vendor SaaS coverage**: not a gap. Six connectors observed across
+  major SaaS applications (vendor-primary, 2026-08-28).
+- **remediation workflow**: unresolved. The posture dashboard surfaces findings;
+  whether it acts on them is not established (vendor-primary, 2026-08-28).
 
 ## Open questions
 

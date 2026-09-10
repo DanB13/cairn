@@ -206,6 +206,51 @@ def check_interpretation(where: str, body: str, rep: Report) -> None:
 
 # ---------------------------------------------------------------- vendors
 
+def _normalise_prose(text: str) -> str:
+    """Lowercase, strip punctuation, collapse whitespace. For phrase matching."""
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", text.lower()).split())
+
+
+GAPS_HEADING_RE = re.compile(r"^#{1,6}\s*gaps\s+observed", re.IGNORECASE | re.MULTILINE)
+
+
+def check_criteria_coverage(rel: str, fm: dict, body: str, cfg: dict,
+                            rep: Report) -> None:
+    """Tier 1 gap sections must address every stated buyer criterion.
+
+    Criteria are the fixed yardstick every vendor is measured against, so a
+    criterion missing from a gap section is not a neutral omission: it means
+    that vendor was never assessed on it, while the page reads as complete.
+    This surfaces most sharply when the criteria list changes, because pages
+    silently keep measuring against the old one.
+
+    Matching is on the criterion phrase verbatim, normalised for case and
+    punctuation. Quoting the criterion is the point: it keeps gap sections
+    mechanically comparable across vendors.
+    """
+    if fm.get("tier") != "tier-1" or fm.get("status") not in ("active", "watch"):
+        return
+    criteria = (((cfg or {}).get("organisation") or {}).get("icp") or {}).get(
+        "must_have_criteria") or []
+    if not criteria:
+        return
+
+    m = GAPS_HEADING_RE.search(body)
+    if not m:
+        rep.warn(rel, "no 'Gaps observed' section found on a tier-1 page")
+        return
+    rest = body[m.end():]
+    nxt = re.search(r"^#{1,6}\s", rest, re.MULTILINE)
+    section = _normalise_prose(rest[: nxt.start()] if nxt else rest)
+
+    for crit in criteria:
+        if _normalise_prose(str(crit)) not in section:
+            rep.warn(rel, f"gap section does not address the buyer criterion "
+                          f"{crit!r}. Quote it verbatim, including when it is "
+                          f"not a gap: an unaddressed criterion means the vendor "
+                          f"was never assessed on it.")
+
+
 def check_vendors(root: str, cfg: dict, prof: dict, rep: Report):
     vdir = os.path.join(root, (cfg["paths"]["vendors"] if cfg else "vendors"))
     tier_ids = {t["id"] for t in (prof or {}).get("tiers", [])}
@@ -266,6 +311,7 @@ def check_vendors(root: str, cfg: dict, prof: dict, rep: Report):
 
         check_style(rel, body, cfg, rep)
         check_interpretation(rel, body, rep)
+        check_criteria_coverage(rel, fm, body, cfg, rep)
 
         low = body.lower()
         if "confidence: rumour" in low or "| rumour |" in low:
