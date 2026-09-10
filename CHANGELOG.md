@@ -4,6 +4,27 @@ Schema versions and framework versions move independently. `schema_version` is
 what seeded instances depend on; only a breaking schema change bumps it, and a
 migration script ships alongside.
 
+## 1.2.0
+
+Coverage and pages are now decoupled. No schema change; `schema_version`
+remains 1.
+
+Found by the first real migration, from a hand-maintained register of roughly
+35 competitors of which about 25 were unverified leads. The framework required
+a vendor page for every tier index entry, which would have forced 25 thin pages
+into existence. That is worse than not having them: a thin page nobody
+maintains still reads as current, whereas an honest index row does not pretend
+to be analysis.
+
+- Tier index entries accept `lead: true`, meaning tracked coverage with no page
+  yet. Leads need no vendor page, and a lead that acquires one must drop the
+  flag.
+- Tier index entries accept `verified`, the date the row was last checked
+  against a live source.
+- Filing a signal against a lead warns rather than fails: intel exists, so the
+  lead has been checked and should be promoted to a page.
+- Contract checks: 37, up from 33.
+
 ## 1.1.0
 
 New checks. No schema change; `schema_version` remains 1, so no migration is

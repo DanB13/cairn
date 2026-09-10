@@ -293,6 +293,47 @@ CASES = [
         r"warning.*same single person is Curator and only Reviewer",
         "warning",
     ),
+    # Lead entries: coverage in the index without a page, so an unverified
+    # lead is never dressed up as a maintained page.
+    (
+        "a lead needs no vendor page",
+        lambda r: edit(r, "tiers.yaml",
+                       "  - slug: veridian-labs\n    tier: tier-3",
+                       "  - slug: newcomer-labs\n    tier: tier-3\n    lead: true\n"
+                       "  - slug: veridian-labs\n    tier: tier-3"),
+        None,
+        "clean",
+    ),
+    (
+        "a non-lead index entry still requires a page",
+        lambda r: edit(r, "tiers.yaml",
+                       "  - slug: veridian-labs\n    tier: tier-3",
+                       "  - slug: newcomer-labs\n    tier: tier-3\n"
+                       "  - slug: veridian-labs\n    tier: tier-3"),
+        r"ERROR.*'newcomer-labs' is indexed but has no vendors/newcomer-labs\.md",
+        "error",
+    ),
+    (
+        "a lead that has grown a page must lose the flag",
+        lambda r: edit(r, "tiers.yaml",
+                       "  - slug: veridian-labs\n    tier: tier-3",
+                       "  - slug: veridian-labs\n    tier: tier-3\n    lead: true"),
+        r"ERROR.*marked lead but vendors/veridian-labs\.md exists",
+        "error",
+    ),
+    (
+        "filing intel against a lead warns that it should be promoted",
+        lambda r: (
+            edit(r, "tiers.yaml",
+                 "  - slug: veridian-labs\n    tier: tier-3",
+                 "  - slug: newcomer-labs\n    tier: tier-3\n    lead: true\n"
+                 "  - slug: veridian-labs\n    tier: tier-3"),
+            edit(r, os.path.join("signals", "sig-2026-07-30-veridian-labs-01.md"),
+                 "vendor: veridian-labs", "vendor: newcomer-labs"),
+        ),
+        r"warning.*'newcomer-labs' is still an unverified lead",
+        "warning",
+    ),
     (
         "instance profiles override framework profiles",
         lambda r: (

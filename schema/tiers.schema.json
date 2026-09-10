@@ -4,21 +4,48 @@
   "title": "Tier index",
   "description": "Canonical answer to 'what do we track'. If any other file disagrees, this wins. Curator-owned via CODEOWNERS.",
   "type": "object",
-  "required": ["schema_version", "profile", "vendors"],
+  "required": [
+    "schema_version",
+    "profile",
+    "vendors"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
-    "profile": { "type": "string", "description": "Active market profile filename stem, e.g. data-security." },
+    "schema_version": {
+      "$ref": "common.schema.json#/$defs/schema_version"
+    },
+    "profile": {
+      "type": "string",
+      "description": "Active market profile filename stem, e.g. data-security."
+    },
     "vendors": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["slug", "tier"],
+        "required": [
+          "slug",
+          "tier"
+        ],
         "additionalProperties": false,
         "properties": {
-          "slug": { "$ref": "common.schema.json#/$defs/slug" },
-          "tier": { "type": "string" },
-          "note": { "type": "string" }
+          "slug": {
+            "$ref": "common.schema.json#/$defs/slug"
+          },
+          "tier": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "lead": {
+            "type": "boolean",
+            "description": "Tracked in the index, no vendor page yet. Use for unverified leads populated from general knowledge rather than a checked source. A thin page nobody maintains reads as current and is worse than an honest index row, so coverage and pages are deliberately decoupled."
+          },
+          "verified": {
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+            "description": "When this row was last checked against a live source."
+          }
         }
       }
     }

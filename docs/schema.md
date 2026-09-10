@@ -44,6 +44,21 @@ both change the competitive set.
 `/competeseed` interviews for this block. The shipped template deliberately
 fails validation until it is filled in.
 
+## Coverage without pages
+
+`tiers.yaml` is the source of truth for coverage, and an entry may be marked
+`lead: true`: tracked, but with no vendor page yet.
+
+This exists because coverage and analysis are different decisions. Knowing a
+competitor exists is cheap and worth recording early; writing a page you will
+not maintain is not. A thin, stale page reads as current and gets quoted in a
+deal, whereas an index row marked as an unverified lead is honest about what it
+is. Add the `verified` date to record when the row was last checked.
+
+A lead needs no page. A lead that acquires a page must drop the flag, and
+filing a signal against a lead warns that it has clearly been checked and
+should be promoted.
+
 ## Profile resolution
 
 Profiles resolve from the instance's own `profiles/` directory first, then the

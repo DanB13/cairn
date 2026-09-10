@@ -276,25 +276,36 @@ def check_vendors(root: str, cfg: dict, prof: dict, rep: Report):
 
 # ---------------------------------------------------------------- tier index
 
-def check_tier_index(root: str, vendors: dict, prof: dict, rep: Report) -> None:
+def check_tier_index(root: str, vendors: dict, prof: dict, rep: Report) -> set:
     path = os.path.join(root, "tiers.yaml")
     if not os.path.exists(path):
         rep.error("tiers.yaml", "missing; it is the source of truth for coverage")
-        return
+        return set()
     idx, _ = L.parse_frontmatter("---\n" + L.read_text(path) + "\n---\n")
     rep.extend("tiers.yaml", L.validate(idx, L.load_schema("tiers.schema.json")))
 
-    listed = {}
+    listed, leads = {}, set()
     for entry in idx.get("vendors") or []:
         slug = entry.get("slug")
         if slug in listed:
             rep.error("tiers.yaml", f"duplicate entry for {slug!r}")
         listed[slug] = entry.get("tier")
+        if entry.get("lead"):
+            leads.add(slug)
 
     for slug in listed:
+        if slug in leads:
+            # Leads are indexed coverage without a page, deliberately.
+            if slug in vendors:
+                rep.error("tiers.yaml",
+                          f"{slug!r} is marked lead but vendors/{slug}.md exists; "
+                          f"remove the lead flag now that it has a page")
+            continue
         if slug not in vendors:
             rep.error("tiers.yaml",
-                      f"{slug!r} is indexed but has no vendors/{slug}.md")
+                      f"{slug!r} is indexed but has no vendors/{slug}.md. Mark it "
+                      f"lead: true if it is an unverified lead rather than "
+                      f"tracked coverage.")
     for slug in vendors:
         if slug not in listed:
             rep.error("tiers.yaml",
@@ -306,11 +317,13 @@ def check_tier_index(root: str, vendors: dict, prof: dict, rep: Report) -> None:
                 f"tier disagreement for {slug!r}: index says {tier!r}, page says "
                 f"{vendors[slug].get('tier')!r}. The index wins; correct the page.",
             )
+    return leads
 
 
 # ---------------------------------------------------------------- signals
 
-def check_signals(root: str, cfg: dict, vendors: dict, prof: dict, rep: Report):
+def check_signals(root: str, cfg: dict, vendors: dict, prof: dict, rep: Report,
+                  leads: set | None = None):
     sdirs = [os.path.join(root, cfg["paths"]["signals"] if cfg else "signals")]
     archive = os.path.join(root, (cfg or {}).get("paths", {}).get("archive", "archive"))
     if os.path.isdir(archive):
@@ -344,8 +357,14 @@ def check_signals(root: str, cfg: dict, vendors: dict, prof: dict, rep: Report):
 
             vendor = fm.get("vendor")
             if vendor and vendor not in vendors:
-                rep.error(rel, f"references untracked vendor {vendor!r}; adding a "
-                               f"vendor is a Curator decision, not a signal")
+                if vendor in (leads or set()):
+                    rep.warn(rel, f"{vendor!r} is still an unverified lead in the "
+                                  f"tier index. Filing intel against it means it "
+                                  f"has been checked: give it a page and drop the "
+                                  f"lead flag.")
+                else:
+                    rep.error(rel, f"references untracked vendor {vendor!r}; adding "
+                                   f"a vendor is a Curator decision, not a signal")
             if sid and fm.get("date") and f"-{fm['date']}-" not in f"-{sid}-":
                 rep.error(rel, f"id date does not match date field {fm['date']!r}")
 
@@ -517,8 +536,8 @@ def run(root: str, strict_warnings: bool = False) -> int:
 
     vendors = check_vendors(root, cfg, prof, rep)
     check_organisation(cfg, prof, vendors, rep)
-    check_tier_index(root, vendors, prof, rep)
-    signals = check_signals(root, cfg, vendors, prof, rep)
+    leads = check_tier_index(root, vendors, prof, rep)
+    signals = check_signals(root, cfg, vendors, prof, rep, leads)
     check_assessments(root, cfg, vendors, signals, rep)
     check_product(root, cfg, rep)
     check_governance_wiring(root, cfg, rep)
