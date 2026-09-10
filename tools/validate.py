@@ -437,6 +437,60 @@ def check_assessments(root: str, cfg: dict, vendors: dict, signals: dict, rep: R
                      "have nowhere legitimate to live")
 
 
+# Handles shipped in the instance template. Left unreplaced, GitHub silently
+# ignores them: the repository ends up with NO code owners, "require review
+# from Code Owners" passes vacuously, and governance is absent while appearing
+# configured. Nothing in GitHub warns about this, so the framework must.
+CODEOWNER_PLACEHOLDERS = [
+    "@CURATOR_DEPUTY", "@CURATOR", "@REVIEWERS", "@PRODUCT_OWNER", "@OWNER",
+]
+
+GOVERNANCE_PLACEHOLDERS = {"unassigned", "replace_me", "replace me", "tbd"}
+
+
+def check_governance_wiring(root: str, cfg: dict, rep: Report) -> None:
+    """Confirm governance is wired to real people, not to template placeholders."""
+    path = os.path.join(root, ".github", "CODEOWNERS")
+    rel = ".github/CODEOWNERS"
+
+    if not os.path.exists(path):
+        rep.warn(rel, "no CODEOWNERS file; branch protection has nothing to "
+                      "require review from, so the Curator and Reviewer split "
+                      "is documentation rather than a control")
+    else:
+        text = L.read_text(path)
+        for n, line in enumerate(text.split("\n"), 1):
+            if line.lstrip().startswith("#"):
+                continue
+            for placeholder in CODEOWNER_PLACEHOLDERS:
+                if placeholder in line:
+                    rep.error(
+                        f"{rel}:{n}",
+                        f"unreplaced template placeholder {placeholder!r}. "
+                        f"GitHub ignores owners it cannot resolve, so this file "
+                        f"currently assigns no owner at all. Replace it with a "
+                        f"real handle or team.",
+                    )
+                    break
+
+    gov = (cfg or {}).get("governance") or {}
+    for field in ("curators", "curator_deputy", "reviewers"):
+        for who in gov.get(field) or []:
+            if str(who).strip().lower() in GOVERNANCE_PLACEHOLDERS:
+                rep.error(f"config.yaml governance.{field}",
+                          f"{who!r} is a placeholder; name a real person. "
+                          f"An unassigned role is an unstaffed one.")
+
+    curators = [c for c in (gov.get("curators") or [])]
+    reviewers = [r for r in (gov.get("reviewers") or [])]
+    if curators and reviewers and set(curators) == set(reviewers) and len(reviewers) == 1:
+        rep.warn("config.yaml governance",
+                 "the same single person is Curator and only Reviewer. That is "
+                 "the bundled role the split exists to avoid: strategic work "
+                 "gets crowded out by queue review, or review rots. Name a "
+                 "second Reviewer.")
+
+
 def check_product(root: str, cfg: dict, rep: Report) -> None:
     pdir = os.path.join(root, (cfg or {}).get("paths", {}).get("product", "product"))
     files = sorted(glob.glob(os.path.join(pdir, "*.md")))
@@ -467,6 +521,7 @@ def run(root: str, strict_warnings: bool = False) -> int:
     signals = check_signals(root, cfg, vendors, prof, rep)
     check_assessments(root, cfg, vendors, signals, rep)
     check_product(root, cfg, rep)
+    check_governance_wiring(root, cfg, rep)
 
     for w in rep.warnings:
         print(f"warning  {w}")

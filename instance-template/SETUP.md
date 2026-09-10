@@ -60,7 +60,13 @@ Then the rest:
   never depends on one person being available.
 
 Edit `.github/CODEOWNERS` and replace `@CURATOR`, `@CURATOR_DEPUTY`,
-`@REVIEWERS` and `@PRODUCT_OWNER` with real handles.
+`@REVIEWERS` and `@PRODUCT_OWNER` with real handles or teams.
+
+Do not skip this or leave it half done. GitHub silently ignores owners it cannot
+resolve, so an unreplaced placeholder leaves the repository with **no** code
+owners while appearing configured, and branch protection then passes without
+anyone reviewing anything. The validator fails on unreplaced placeholders for
+exactly this reason.
 
 ## 6. Turn on branch protection
 

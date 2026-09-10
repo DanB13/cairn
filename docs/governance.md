@@ -36,6 +36,21 @@ Without this, anyone can commit to the default branch and bypass both review and
 the content contract. This is step 6 of `SETUP.md` and it is the step people
 skip.
 
+### The placeholder trap
+
+GitHub **silently ignores** code owners it cannot resolve. It does not warn, and
+it does not fail. So an instance created from the template with `@CURATOR` still
+in place has no code owners at all: "require review from Code Owners" is
+satisfied vacuously, every rule in this document is unenforced, and the
+repository looks correctly configured throughout.
+
+The validator therefore treats an unreplaced placeholder as an error, and the
+same applies to `unassigned` in `config.yaml` under `governance`. An unassigned
+role is an unstaffed one.
+
+It also warns when one person is both Curator and the only Reviewer, because
+that is precisely the bundled role the split exists to avoid.
+
 ## Two rules that close the obvious gaps
 
 - **Nobody merges their own submission.** Including Curators. The audit trail is

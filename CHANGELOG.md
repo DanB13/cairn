@@ -4,6 +4,26 @@ Schema versions and framework versions move independently. `schema_version` is
 what seeded instances depend on; only a breaking schema change bumps it, and a
 migration script ships alongside.
 
+## 1.1.0
+
+New checks. No schema change; `schema_version` remains 1, so no migration is
+needed. Existing instances may see new errors, which is the intent.
+
+- Governance wiring is now validated. An unreplaced `CODEOWNERS` placeholder is
+  an error, because GitHub silently ignores owners it cannot resolve: an
+  instance with `@CURATOR` still in place has no code owners at all, branch
+  protection passes vacuously, and the whole governance model is unenforced
+  while appearing configured. Nothing in GitHub warns about this.
+- `unassigned` in `governance.curators`, `curator_deputy` or `reviewers` is an
+  error. An unassigned role is an unstaffed one.
+- Warns when one person is both Curator and the only Reviewer, which is the
+  bundled role the split exists to avoid.
+- Warns when an instance has no `CODEOWNERS` file at all.
+- Bumped `actions/checkout` and `actions/setup-python` to v7 in both the
+  framework workflow and the instance template, clearing the Node 20
+  deprecation.
+- Contract checks: 33, up from 28.
+
 ## 1.0.1
 
 Bug fix. No schema change; `schema_version` remains 1.

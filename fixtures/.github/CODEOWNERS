@@ -1,0 +1,14 @@
+# Synthetic instance. These handles are invented, like everything else here.
+#
+# In a real instance every handle must resolve on GitHub. Unresolvable owners
+# are silently ignored, which leaves the repository with no owners at all while
+# looking correctly configured.
+
+/tiers.yaml          @fixture-curator @fixture-deputy
+/config.yaml         @fixture-curator @fixture-deputy
+/.github/            @fixture-curator
+/product/            @fixture-curator
+
+/signals/            @fixture-reviewer-a @fixture-reviewer-b
+/vendors/            @fixture-reviewer-a @fixture-reviewer-b
+/assessments/        @fixture-reviewer-a @fixture-reviewer-b

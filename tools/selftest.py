@@ -254,6 +254,45 @@ CASES = [
         r"ERROR.*unknown profile 'no-such-market'",
         "error",
     ),
+    # Governance wiring: the template placeholders must not survive into a
+    # real instance, because GitHub ignores owners it cannot resolve.
+    (
+        "unreplaced CODEOWNERS placeholder is an error",
+        lambda r: edit(r, os.path.join(".github", "CODEOWNERS"),
+                       "@fixture-curator @fixture-deputy",
+                       "@CURATOR @CURATOR_DEPUTY"),
+        r"ERROR.*unreplaced template placeholder '\@CURATOR",
+        "error",
+    ),
+    (
+        "generic OWNER placeholder is caught too",
+        lambda r: edit(r, os.path.join(".github", "CODEOWNERS"),
+                       "@fixture-reviewer-a @fixture-reviewer-b", "@REVIEWERS"),
+        r"ERROR.*unreplaced template placeholder '\@REVIEWERS'",
+        "error",
+    ),
+    (
+        "missing CODEOWNERS warns that governance is unenforced",
+        lambda r: os.remove(os.path.join(r, ".github", "CODEOWNERS")),
+        r"warning.*no CODEOWNERS file",
+        "warning",
+    ),
+    (
+        "unassigned curator is an error",
+        lambda r: edit(r, "config.yaml", "    - fixture-curator", "    - unassigned"),
+        r"ERROR.*governance\.curators: 'unassigned' is a placeholder",
+        "error",
+    ),
+    (
+        "one person as both Curator and sole Reviewer warns",
+        lambda r: edit(
+            r, "config.yaml",
+            "  reviewers:\n    - fixture-reviewer-a\n    - fixture-reviewer-b",
+            "  reviewers:\n    - fixture-curator",
+        ),
+        r"warning.*same single person is Curator and only Reviewer",
+        "warning",
+    ),
     (
         "instance profiles override framework profiles",
         lambda r: (
