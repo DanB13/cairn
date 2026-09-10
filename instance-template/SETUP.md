@@ -38,11 +38,23 @@ python3 .framework/tools/check_visibility.py .
 The second command must report that the instance is not public. If it cannot
 resolve visibility, fix that before adding any real intel.
 
-## 5. Fill in governance and the profile
+## 5. Fill in who you are, then governance and the profile
 
-Edit `config.yaml`:
+Edit `config.yaml`. The `organisation` block ships with placeholders that
+deliberately fail validation, because an instance that does not know its own
+size, stage and buyer criteria cannot tier competitors sensibly. Run
+`/competeseed` and it will interview you, or fill it in by hand.
 
-- `profile`: pick from the framework's `profiles/`, or copy one and adapt it.
+The field worth real thought is `icp.must_have_criteria`. Every vendor page
+records gaps against that list, so a vague list produces vague gap sections
+across the whole repository.
+
+Then the rest:
+
+- `profile`: pick from the framework's `profiles/`, copy one into this
+  repository's own `profiles/` and adapt it, or write your own. Instance
+  profiles override framework ones, so you never need to fork the framework to
+  get the vocabulary you want.
 - `governance.curators`: who owns tiering and structure. Low frequency.
 - `governance.reviewers`: who works the pull request queue. Plural, so review
   never depends on one person being available.

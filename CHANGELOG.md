@@ -29,4 +29,10 @@ Notarised). `schema_version: 1`.
 - Visibility guardrail: refuses to seed or push a private instance to a public
   repository, enforced in three places.
 - Dependency-free validators, plus 18 negative tests proving each check fires.
-- Market profiles for `generic`, `data-security` and `devtools`.
+- Market profiles for `generic`, `data-security` and `devtools`, resolved from
+  the instance's own `profiles/` directory before the framework's, so adapting a
+  vocabulary never requires forking.
+- Required `organisation` block in instance config, gathered by the
+  `/competeseed` interview. Kept distinct from the profile: `organisation` is
+  identity, a profile is vocabulary. Checked rather than decorative, and carried
+  into `index.json` for consumers.

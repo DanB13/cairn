@@ -3,6 +3,36 @@
   "schema_version": 1,
   "instance": "Fixture Instance",
   "profile": "data-security",
+  "organisation": {
+    "name": "Fixture Co",
+    "domain": "fixture.example",
+    "industry": "SaaS data security",
+    "size": "51-200",
+    "stage": "series-a",
+    "reviewed": "2026-09-01",
+    "reverify_by": "2027-03-01",
+    "competes_with_platforms": true,
+    "icp": {
+      "segments": [
+        "mid-market",
+        "lower-enterprise"
+      ],
+      "regions": [
+        "uk",
+        "eu"
+      ],
+      "buyer_roles": [
+        "ciso",
+        "security-engineering"
+      ],
+      "must_have_criteria": [
+        "endpoint coverage",
+        "eu data residency",
+        "cross-vendor SaaS coverage",
+        "remediation workflow"
+      ]
+    }
+  },
   "counts": {
     "vendors": 4,
     "signals": 9,

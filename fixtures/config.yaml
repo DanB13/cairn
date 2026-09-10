@@ -4,6 +4,35 @@ schema_version: 1
 instance_name: Fixture Instance
 profile: data-security
 
+# Who we are. Required, and checked rather than decorative: size and stage
+# calibrate which vendors are plausibly head to head, and icp.must_have_criteria
+# is the source for every vendor page's "Gaps observed against stated buyer
+# criteria" section.
+organisation:
+  name: Fixture Co
+  domain: fixture.example
+  industry: SaaS data security
+  size: 51-200
+  stage: series-a
+  reviewed: 2026-09-01
+  reverify_by: 2027-03-01
+  competes_with_platforms: true
+  icp:
+    segments:
+      - mid-market
+      - lower-enterprise
+    regions:
+      - uk
+      - eu
+    buyer_roles:
+      - ciso
+      - security-engineering
+    must_have_criteria:
+      - endpoint coverage
+      - eu data residency
+      - cross-vendor SaaS coverage
+      - remediation workflow
+
 governance:
   curators:
     - fixture-curator

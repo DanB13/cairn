@@ -52,6 +52,10 @@ Read the assessment file too, and keep it visibly separate from the descriptive
 material. Label the sections so the reader always knows which is observation and
 which is our reading.
 
+When reporting gaps, name the buyer criterion each gap is measured against, from
+`organisation.icp.must_have_criteria` in the index. A gap with no criterion
+attached is an opinion wearing a fact's clothing.
+
 ### `/compete <vendor> --compare`
 
 Side-by-side against the own-product reference in `product/`. This is the one
@@ -80,7 +84,11 @@ the difference matters.
    editorialising from it produces unpredictable claims.
 4. Ship the provenance appendix alongside whatever you generate, even if the
    final artefact does not display it.
-5. If the user asks for a specific claim the gate blocked, tell them which rule
+5. Read `organisation` from the index and stay inside it. Size and funding stage
+   bound what the company can credibly claim, so do not write enterprise-scale
+   proof into collateral for a fifty-person company. Frame value against
+   `icp.segments` and `icp.must_have_criteria`, not against a generic buyer.
+6. If the user asks for a specific claim the gate blocked, tell them which rule
    blocked it and what would unblock it. Never override the gate.
 
 Brand guidelines and templates live in the instance under `brand/`. Apply them

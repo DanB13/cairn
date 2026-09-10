@@ -3,6 +3,45 @@ schema_version: 1
 instance_name: Replace Me
 profile: generic
 
+# Who we are. REQUIRED, and the placeholders below deliberately FAIL validation
+# until you fill them in: an instance that does not know its own size, stage and
+# buyer criteria cannot tier competitors sensibly.
+#
+# Run /competeseed and it will interview you for these. Or fill them by hand.
+#
+# Why each field earns its place:
+#   size, stage  calibrate which vendors are plausibly head to head. A seed-stage
+#                company and a Series C company do not have the same tier 1.
+#   industry     informs which profile to use. It is NOT the profile: a profile
+#                is a tier and lane vocabulary, this is who you are.
+#   icp.must_have_criteria
+#                the source for every vendor page's "Gaps observed against stated
+#                buyer criteria" section, so gaps are recorded against a stable
+#                list rather than whatever the writer happened to remember.
+#   competes_with_platforms
+#                if true, the validator expects at least one platform_native
+#                vendor, because bundled capability is usually the alternative
+#                that never reaches a shortlist.
+organisation:
+  name: REPLACE_ME
+  domain: REPLACE_ME
+  industry: REPLACE_ME
+  # One of: 1-10, 11-50, 51-200, 201-500, 501-1000, 1000+
+  size: REPLACE_ME
+  # One of: bootstrapped, pre-seed, seed, series-a, series-b, series-c-plus,
+  #         growth, public, subsidiary
+  stage: REPLACE_ME
+  reviewed: 1970-01-01
+  reverify_by: 1970-01-02
+  competes_with_platforms: true
+  icp:
+    segments:
+      - REPLACE_ME
+    regions: []
+    buyer_roles: []
+    must_have_criteria:
+      - REPLACE_ME
+
 governance:
   # Curators own tiering, structure and schema changes. Low frequency, strategic.
   curators:

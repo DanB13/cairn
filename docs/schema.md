@@ -19,6 +19,38 @@ See [ADR 002](adr/002-schema-shape.md) for what is locked and why.
 | `config.yaml` | `config.schema.json` | Governance |
 | `profiles/<name>.yaml` | `profile.schema.json` | Framework |
 
+## Organisation context
+
+`config.yaml` carries a required `organisation` block: who you are, as distinct
+from what vocabulary you use.
+
+The distinction matters and is easy to blur. `organisation.industry` is free text
+describing your company. `profile` names a tier and lane **vocabulary**. One is
+identity, the other is the set of words this instance is allowed to use, and a
+profile is deliberately reusable by anyone in the same market, including your
+competitors.
+
+The block is required because three of its fields do real work:
+
+| Field | Does |
+|---|---|
+| `size`, `stage` | Calibrate which vendors are plausibly head to head. A twenty-person company and a five-hundred-person company do not have the same tier 1. |
+| `icp.must_have_criteria` | The source for every vendor page's "Gaps observed against stated buyer criteria" section, so gaps are recorded against a stable list rather than whatever the writer remembered. |
+| `competes_with_platforms` | If true, the validator expects at least one `platform_native` vendor. Claiming bundled capability shows up in your deals while tracking none of it is a coverage gap. |
+
+It also has `reviewed` and `reverify_by`, because size and stage go stale and
+both change the competitive set.
+
+`/competeseed` interviews for this block. The shipped template deliberately
+fails validation until it is filled in.
+
+## Profile resolution
+
+Profiles resolve from the instance's own `profiles/` directory first, then the
+framework's. An instance can therefore adapt or replace a shipped vocabulary
+without forking the framework, and a file with the same name as a shipped
+profile overrides it.
+
 ## Identity and naming
 
 - Vendor filename stem must equal `slug`. Signal filename stem must equal `id`.

@@ -26,9 +26,56 @@ Run these before writing anything. Each is a stop, not a warning.
    yet, confirm explicitly with the user who the Curator will be and write it.
 3. **Target root.** Confirm the instance root with the user. Never infer it from
    a partial match.
-4. **Profile.** Confirm which profile in `profiles/` closes the tier and lane
-   vocabulary. If none fits, copy `generic.yaml` and adapt it; do not invent
-   lanes inline in vendor files, because the validator will reject them.
+4. **Organisation context and profile.** Run the interview below. An instance
+   that does not know its own size, stage and buyer criteria cannot tier
+   competitors sensibly, so `config.yaml` will not validate until this is filled
+   in. The shipped placeholders deliberately fail validation.
+
+## The organisation interview
+
+Ask these before seeding any vendor. Ask them as a conversation, not as a form:
+take what the user volunteers, then fill the gaps. Do not invent answers, and do
+not accept "whatever you think" for size, stage or buyer criteria, because those
+three change which vendors belong in tier 1.
+
+**Who you are**, into `config.yaml` under `organisation`:
+
+| Ask | Field | Why it earns its place |
+|---|---|---|
+| Company name and domain | `name`, `domain` | Attribution, and recognising your own vendor pages |
+| What you sell, and to what industry | `industry` | Informs which profile fits. Free text. |
+| Headcount band | `size` | A twenty-person company and a five-hundred-person company do not have the same tier 1 |
+| Funding stage | `stage` | Calibrates plausibility, and constrains what generated collateral may claim |
+| Segments, regions, buyer roles | `icp.*` | Who you actually sell to |
+| The criteria buyers state as must-haves | `icp.must_have_criteria` | This is the source for every vendor page's "Gaps observed against stated buyer criteria" section |
+| Whether bundled platform capability shows up in your deals | `competes_with_platforms` | If yes, the validator expects at least one `platform_native` vendor |
+
+Set `reviewed` to today and `reverify_by` six months out. Size and stage go
+stale, and both change the competitive set.
+
+`icp.must_have_criteria` is the field worth spending time on. Every vendor page
+records gaps against it, so a vague list produces vague gap sections across the
+whole repository. Push for the criteria buyers actually say out loud in
+evaluations, not the ones you wish they cared about.
+
+**Which vocabulary you use**, into `config.yaml` as `profile`. Profiles are tier
+and lane vocabularies, not identity: `organisation.industry` says who you are,
+the profile says what words this instance is allowed to use. Three routes:
+
+- A shipped profile fits: set `profile: <name>` and move on.
+- One nearly fits: copy it into the instance's own `profiles/` directory and
+  edit the lanes. Instance profiles win over framework ones, so this overrides
+  without forking.
+- Nothing fits: generate one into the instance's `profiles/` from the interview
+  answers, starting from `generic.yaml`.
+
+Advise starting coarse. Lanes are how convergence is detected and how a vendor
+surfaces in more than one place, so too few lanes hide overlap and too many make
+every vendor look unique. Split a lane when two vendors in it stop being
+comparable, not in advance.
+
+Never invent lanes inline in vendor files. The validator rejects any lane absent
+from the active profile, which is the point.
 
 ## Seeding
 
@@ -37,7 +84,10 @@ the default branch: the diff IS the preview, and it is a better one than any
 dry-run flag.
 
 1. `git switch -c seed/<date>-<instance>`.
-2. Copy `templates/config.yaml` and `templates/tiers.yaml` to the root, filled in.
+2. Copy `templates/config.yaml` and `templates/tiers.yaml` to the root, with
+   the `organisation` block filled in from the interview and the profile set.
+   Run `python3 tools/validate.py <root>` at this point: if the organisation
+   placeholders are still present it will fail, which is the intended gate.
 3. For each vendor on the supplied list, create `vendors/<slug>.md` from
    `templates/vendor.md`. The slug is permanent identity: lower-case, hyphenated,
    and never changed afterwards. A rename is a new slug plus `status: merged` and

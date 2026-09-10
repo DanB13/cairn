@@ -139,9 +139,24 @@ The two choices everything else rests on are recorded as decision records:
 
 ## Adapting it to your market
 
-Copy `profiles/generic.yaml`, close the lane vocabulary around your own market,
-and point `config.yaml` at it. Two worked examples ship here:
-`data-security.yaml` and `devtools.yaml`.
+Two things are separate here, and blurring them is the usual mistake.
+
+**Who you are** lives in `config.yaml` under `organisation`: industry, size,
+funding stage, segments, and the criteria your buyers state as must-haves. It is
+private to your instance, it is required, and `/competeseed` interviews you for
+it on first run. Three of those fields do real work rather than sitting there as
+metadata: `size` and `stage` calibrate which vendors are plausibly head to head,
+and `icp.must_have_criteria` is the source for every vendor page's "Gaps observed
+against stated buyer criteria" section, so gaps are recorded against a stable
+list instead of whatever the writer remembered.
+
+**What vocabulary you use** is the profile: a tier and lane vocabulary, closed so
+the validator can reject invented lanes. Profiles are deliberately market-level
+and reusable, which means your competitors could use the same one. Copy
+`profiles/generic.yaml`, close the lanes around your market, and point
+`config.yaml` at it. Profiles resolve from your instance's own `profiles/`
+directory first, so adapting one never requires forking this repository. Two
+worked examples ship here: `data-security.yaml` and `devtools.yaml`.
 
 Three things are first-class rather than optional, because in most markets they
 are structural:

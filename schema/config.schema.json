@@ -4,69 +4,150 @@
   "title": "Instance configuration",
   "description": "Per-instance settings. Lives in the PRIVATE data repo, never in the public framework.",
   "type": "object",
-  "required": ["schema_version", "instance_name", "profile", "governance", "paths"],
+  "required": [
+    "schema_version",
+    "instance_name",
+    "organisation",
+    "profile",
+    "governance",
+    "paths"
+  ],
   "additionalProperties": false,
   "properties": {
-    "schema_version": { "$ref": "common.schema.json#/$defs/schema_version" },
-    "instance_name": { "type": "string" },
-    "profile": { "type": "string" },
+    "schema_version": {
+      "$ref": "common.schema.json#/$defs/schema_version"
+    },
+    "instance_name": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "string",
+      "description": "Tier and lane vocabulary. Resolved from this instance's profiles/ directory first, then the framework's. An instance can therefore define its own market vocabulary without forking the framework."
+    },
     "governance": {
       "type": "object",
-      "required": ["curators", "reviewers"],
+      "required": [
+        "curators",
+        "reviewers"
+      ],
       "additionalProperties": false,
       "properties": {
         "curators": {
-          "type": "array", "minItems": 1, "items": { "type": "string" },
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
           "description": "Own tiering, structure and schema changes. Low frequency, strategic."
         },
-        "curator_deputy": { "type": "array", "items": { "type": "string" } },
+        "curator_deputy": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "reviewers": {
-          "type": "array", "minItems": 1, "items": { "type": "string" },
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
           "description": "Own the pull request queue. High frequency, clerical, deliberately plural."
         },
         "queue_ttl_days": {
-          "type": "integer", "minimum": 1, "default": 30,
+          "type": "integer",
+          "minimum": 1,
+          "default": 30,
           "description": "Unreviewed submissions auto-close after this many days. Stale intel should expire, not queue."
         },
         "triage_order": {
-          "type": "string", "enum": ["newest-first", "tier-weighted"], "default": "tier-weighted"
+          "type": "string",
+          "enum": [
+            "newest-first",
+            "tier-weighted"
+          ],
+          "default": "tier-weighted"
         }
       }
     },
     "paths": {
       "type": "object",
-      "required": ["vendors", "signals", "assessments", "archive"],
+      "required": [
+        "vendors",
+        "signals",
+        "assessments",
+        "archive"
+      ],
       "additionalProperties": false,
       "properties": {
-        "vendors": { "type": "string" },
-        "signals": { "type": "string" },
-        "assessments": { "type": "string" },
-        "archive": { "type": "string" },
-        "product": { "type": "string" },
-        "brand": { "type": "string" }
+        "vendors": {
+          "type": "string"
+        },
+        "signals": {
+          "type": "string"
+        },
+        "assessments": {
+          "type": "string"
+        },
+        "archive": {
+          "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "brand": {
+          "type": "string"
+        }
       }
     },
     "shelf_life_days": {
       "type": "object",
       "description": "Per signal type. Absent types fall back to default_days.",
-      "additionalProperties": { "type": "integer", "minimum": 1 }
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 1
+      }
     },
-    "default_shelf_life_days": { "type": "integer", "minimum": 1, "default": 365 },
+    "default_shelf_life_days": {
+      "type": "integer",
+      "minimum": 1,
+      "default": 365
+    },
     "retention": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "recent_moves_window_days": { "type": "integer", "minimum": 30, "default": 365 },
-        "archive_after_days": { "type": "integer", "minimum": 90, "default": 730 }
+        "recent_moves_window_days": {
+          "type": "integer",
+          "minimum": 30,
+          "default": 365
+        },
+        "archive_after_days": {
+          "type": "integer",
+          "minimum": 90,
+          "default": 730
+        }
       }
     },
     "style": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "forbid_em_dash": { "type": "boolean", "default": true },
-        "forbid_patterns": { "type": "array", "items": { "type": "string" } },
-        "max_claim_words": { "type": "integer", "minimum": 10, "default": 80 }
+        "forbid_em_dash": {
+          "type": "boolean",
+          "default": true
+        },
+        "forbid_patterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "max_claim_words": {
+          "type": "integer",
+          "minimum": 10,
+          "default": 80
+        }
       }
     },
     "collateral": {
@@ -74,19 +155,146 @@
       "additionalProperties": false,
       "properties": {
         "min_confidence": {
-          "type": "string", "enum": ["confirmed", "likely"], "default": "likely",
+          "type": "string",
+          "enum": [
+            "confirmed",
+            "likely"
+          ],
+          "default": "likely",
           "description": "Rumour can never reach outbound collateral. This sets the floor above that."
         },
-        "require_provenance_appendix": { "type": "boolean", "default": true },
-        "max_claim_age_days": { "type": "integer", "minimum": 1, "default": 180 }
+        "require_provenance_appendix": {
+          "type": "boolean",
+          "default": true
+        },
+        "max_claim_age_days": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 180
+        }
       }
     },
     "sources": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "trusted_origins": { "type": "array", "items": { "type": "string" } },
-        "analyst_tier1": { "type": "array", "items": { "type": "string" } }
+        "trusted_origins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "analyst_tier1": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "organisation": {
+      "type": "object",
+      "description": "Who we are. Private to this instance, and required: tiering, collateral claims and the buyer criteria that gap sections are written against all depend on it. Gathered by the /competeseed interview.",
+      "required": [
+        "name",
+        "industry",
+        "size",
+        "stage",
+        "reviewed",
+        "reverify_by",
+        "icp"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 2
+        },
+        "domain": {
+          "type": "string"
+        },
+        "industry": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Free text. Informs which profile to use, but is not the profile: a profile is a tier and lane vocabulary, this is who we are."
+        },
+        "size": {
+          "type": "string",
+          "enum": [
+            "1-10",
+            "11-50",
+            "51-200",
+            "201-500",
+            "501-1000",
+            "1000+"
+          ],
+          "description": "Headcount band. Calibrates which vendors are plausibly head to head."
+        },
+        "stage": {
+          "type": "string",
+          "enum": [
+            "bootstrapped",
+            "pre-seed",
+            "seed",
+            "series-a",
+            "series-b",
+            "series-c-plus",
+            "growth",
+            "public",
+            "subsidiary"
+          ]
+        },
+        "reviewed": {
+          "$ref": "common.schema.json#/$defs/date"
+        },
+        "reverify_by": {
+          "$ref": "common.schema.json#/$defs/date",
+          "description": "Size and stage go stale, and both change the competitive set."
+        },
+        "icp": {
+          "type": "object",
+          "required": [
+            "segments",
+            "must_have_criteria"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "segments": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "buyer_roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "must_have_criteria": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "description": "Criteria buyers actually state. This is the source for the vendor template's 'Gaps observed against stated buyer criteria' section, so gaps are recorded against a stable list rather than whatever the writer remembered."
+            }
+          }
+        },
+        "competes_with_platforms": {
+          "type": "boolean",
+          "description": "Whether bundled platform capability shows up in your deals. If true, the validator expects at least one platform_native vendor."
+        },
+        "notes": {
+          "type": "string"
+        }
       }
     }
   }

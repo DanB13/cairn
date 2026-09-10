@@ -84,16 +84,84 @@ def load_config(root: str, rep: Report):
     return cfg
 
 
-def load_profile(name: str, rep: Report):
+def profile_search_path(root: str, name: str) -> list[str]:
+    """Instance profiles win over framework profiles.
+
+    An instance can define its own market vocabulary without forking the
+    framework, which matters because no shipped profile will fit every market.
+    """
     here = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(here, "..", "profiles", f"{name}.yaml")
-    if not os.path.exists(path):
-        rep.error("profile", f"unknown profile {name!r} (looked in profiles/)")
-        return None
-    prof, _ = L.parse_frontmatter("---\n" + L.read_text(path) + "\n---\n")
-    rep.extend(f"profiles/{name}.yaml",
-               L.validate(prof, L.load_schema("profile.schema.json")))
-    return prof
+    return [
+        os.path.join(root, "profiles", f"{name}.yaml"),
+        os.path.join(here, "..", "profiles", f"{name}.yaml"),
+    ]
+
+
+def load_profile(root: str, name: str, rep: Report):
+    for path in profile_search_path(root, name):
+        if os.path.exists(path):
+            prof, _ = L.parse_frontmatter(
+                "---\n" + L.read_text(path) + "\n---\n"
+            )
+            rep.extend(f"profiles/{name}.yaml",
+                       L.validate(prof, L.load_schema("profile.schema.json")))
+            return prof
+    rep.error("profile", f"unknown profile {name!r}; looked in this instance's "
+                         f"profiles/ then the framework's")
+    return None
+
+
+def check_organisation(cfg: dict, prof: dict, vendors: dict, rep: Report) -> None:
+    """Organisation context is required, and is checked rather than decorative.
+
+    Size and stage calibrate which vendors are plausibly head to head, ICP
+    criteria are the source for gap sections, and both go stale.
+    """
+    org = (cfg or {}).get("organisation") or {}
+    if not org:
+        return  # schema validation has already reported the absence
+
+    where = "config.yaml organisation"
+
+    if org.get("reverify_by"):
+        try:
+            if L.as_date(org["reverify_by"]) < L.today():
+                rep.warn(where, f"organisation context is "
+                                f"{L.age_days(org['reverify_by'])} days past "
+                                f"reverify_by; size and stage change who counts "
+                                f"as a competitor")
+        except ValueError as exc:
+            rep.error(where, f"unparseable reverify_by: {exc}")
+    if org.get("reviewed") and org.get("reverify_by"):
+        try:
+            if L.as_date(org["reverify_by"]) <= L.as_date(org["reviewed"]):
+                rep.error(where, "reverify_by must be after reviewed")
+        except ValueError:
+            pass
+
+    active = {slug: v for slug, v in vendors.items()
+              if v.get("status") in ("active", "watch")}
+
+    if org.get("competes_with_platforms"):
+        if not any((v.get("flags") or {}).get("platform_native")
+                   for v in active.values()):
+            rep.warn(where, "competes_with_platforms is true but no vendor "
+                            "carries the platform_native flag; bundled "
+                            "capability is usually the alternative that never "
+                            "reaches a shortlist")
+
+    tier_ids = {t["id"] for t in (prof or {}).get("tiers", [])}
+    if "status-quo" in tier_ids and not any(
+        (v.get("flags") or {}).get("status_quo") for v in active.values()
+    ):
+        rep.warn(where, "the profile defines a status-quo tier but nothing is "
+                        "tracked in it; doing nothing wins deals and has no "
+                        "marketing site to remind you")
+
+    if cfg.get("profile") == "generic" and len(active) > 3:
+        rep.warn(where, f"{len(active)} vendors tracked against the generic "
+                        f"profile; close the lane vocabulary around your market "
+                        f"by copying a profile into this instance's profiles/")
 
 
 # ---------------------------------------------------------------- style
@@ -391,9 +459,10 @@ def check_product(root: str, cfg: dict, rep: Report) -> None:
 def run(root: str, strict_warnings: bool = False) -> int:
     rep = Report()
     cfg = load_config(root, rep)
-    prof = load_profile(cfg["profile"], rep) if cfg and cfg.get("profile") else None
+    prof = load_profile(root, cfg["profile"], rep) if cfg and cfg.get("profile") else None
 
     vendors = check_vendors(root, cfg, prof, rep)
+    check_organisation(cfg, prof, vendors, rep)
     check_tier_index(root, vendors, prof, rep)
     signals = check_signals(root, cfg, vendors, prof, rep)
     check_assessments(root, cfg, vendors, signals, rep)

@@ -133,6 +133,11 @@ def build(root: str) -> dict:
         "schema_version": 1,
         "instance": cfg.get("instance_name"),
         "profile": cfg.get("profile"),
+        # Carried through so consumers get organisation context without parsing
+        # config.yaml. Collateral generation needs size and stage to avoid
+        # claims the company cannot support, and gap sections are written
+        # against icp.must_have_criteria.
+        "organisation": cfg.get("organisation") or {},
         "counts": {
             "vendors": len(vendor_rows),
             "signals": len(signals),

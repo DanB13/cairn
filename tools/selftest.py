@@ -43,6 +43,22 @@ def append(root, rel, text):
         fh.write(text)
 
 
+def write(root, rel, text):
+    path = os.path.join(root, rel)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(text)
+
+
+def instance_profile(root, name, extra_lane):
+    """Copy a framework profile into the instance and add a lane to it."""
+    src = os.path.join(ROOT, "profiles", f"{name}.yaml")
+    with open(src, encoding="utf-8") as fh:
+        text = fh.read()
+    text += f"  - id: {extra_lane}\n    label: Instance only lane\n"
+    write(root, os.path.join("profiles", f"{name}.yaml"), text)
+
+
 # Each case: (name, mutation, expected regex, expected_level)
 CASES = [
     (
@@ -167,6 +183,86 @@ CASES = [
         "interpretation in the assessment layer is never flagged",
         lambda r: append(r, os.path.join("assessments", "northwind-secure.md"),
                          "\nWe should pitch against them on coverage.\n"),
+        None,
+        "clean",
+    ),
+    # Organisation context: required, and checked rather than decorative.
+    (
+        "organisation block is required",
+        lambda r: edit(r, "config.yaml", "organisation:", "organisation_disabled:"),
+        r"ERROR.*missing required field 'organisation'",
+        "error",
+    ),
+    (
+        "organisation size must be a known band",
+        lambda r: edit(r, "config.yaml", "size: 51-200", "size: medium-ish"),
+        r"ERROR.*organisation\.size: 'medium-ish' is not one of",
+        "error",
+    ),
+    (
+        "organisation stage must be a known stage",
+        lambda r: edit(r, "config.yaml", "stage: series-a", "stage: unicorn"),
+        r"ERROR.*organisation\.stage: 'unicorn' is not one of",
+        "error",
+    ),
+    (
+        "buyer criteria cannot be an empty list",
+        lambda r: edit(
+            r, "config.yaml",
+            "    must_have_criteria:\n"
+            "      - endpoint coverage\n"
+            "      - eu data residency\n"
+            "      - cross-vendor SaaS coverage\n"
+            "      - remediation workflow\n",
+            "    must_have_criteria: []\n",
+        ),
+        r"ERROR.*must_have_criteria: needs at least 1 item",
+        "error",
+    ),
+    (
+        "stale organisation context warns",
+        lambda r: edit(r, "config.yaml", "reverify_by: 2027-03-01",
+                       "reverify_by: 2026-09-05"),
+        r"warning.*organisation context is \d+ days past reverify_by",
+        "warning",
+    ),
+    (
+        "organisation reverify_by must follow reviewed",
+        lambda r: edit(r, "config.yaml", "reverify_by: 2027-03-01",
+                       "reverify_by: 2026-08-01"),
+        r"ERROR.*reverify_by must be after reviewed",
+        "error",
+    ),
+    (
+        "claiming platform competition without tracking any warns",
+        lambda r: edit(r, os.path.join("vendors", "helios-platform.md"),
+                       "  platform_native: true", "  platform_native: false"),
+        r"warning.*no vendor carries the platform_native flag",
+        "warning",
+    ),
+    (
+        "an untracked status quo warns",
+        lambda r: edit(r, os.path.join("vendors", "status-quo.md"),
+                       "  status_quo: true", "  status_quo: false"),
+        r"warning.*nothing is tracked in it",
+        "warning",
+    ),
+    (
+        "unknown profile is an error",
+        lambda r: edit(r, "config.yaml", "profile: data-security",
+                       "profile: no-such-market"),
+        r"ERROR.*unknown profile 'no-such-market'",
+        "error",
+    ),
+    (
+        "instance profiles override framework profiles",
+        lambda r: (
+            instance_profile(r, "data-security", "instance-only-lane"),
+            edit(r, os.path.join("vendors", "veridian-labs.md"),
+                 "  - ai-data-governance", "  - instance-only-lane"),
+            edit(r, os.path.join("signals", "sig-2026-07-30-veridian-labs-01.md"),
+                 "lane: ai-data-governance", "lane: instance-only-lane"),
+        ),
         None,
         "clean",
     ),

@@ -32,17 +32,28 @@ matters: create the private repository and confirm the visibility check passes
 
 ## The first week
 
-1. **Lock the profile.** Pick or adapt one from `profiles/`. Lane vocabulary is
-   the thing you will regret leaving loose.
-2. **Name the roles.** Curator, deputy, Reviewers, product owner. Put real
+1. **Answer the organisation interview.** `/competeseed` asks who you are: size,
+   stage, segments, and the criteria buyers state as must-haves. The config will
+   not validate until it is filled in, and that is deliberate: you cannot tier
+   competitors sensibly without knowing your own size and stage.
+
+   Spend the time on `icp.must_have_criteria`. Every vendor page records gaps
+   against that list, so a vague list produces vague gap sections everywhere.
+   Use the criteria buyers actually say out loud, not the ones you wish they
+   cared about.
+2. **Lock the profile.** Pick or adapt one from `profiles/`, or generate one into
+   your instance's own `profiles/` directory. Lane vocabulary is the thing you
+   will regret leaving loose. Start coarse: too few lanes hide overlap, too many
+   make every vendor look unique.
+3. **Name the roles.** Curator, deputy, Reviewers, product owner. Put real
    handles in `CODEOWNERS`.
-3. **Turn on branch protection.** Until this is done, the contract is advisory.
-4. **Write the own-product reference before any competitor page.** Comparison
+4. **Turn on branch protection.** Until this is done, the contract is advisory.
+5. **Write the own-product reference before any competitor page.** Comparison
    output is only as good as this file, and writing it first forces you to state
    your own gaps honestly while nothing is at stake.
-5. **Seed tier 1 only.** Four or five vendors. Resist seeding the long tail: a
+6. **Seed tier 1 only.** Four or five vendors. Resist seeding the long tail: a
    thin page nobody maintains is worse than no page, because it reads as current.
-6. **File ten signals by hand** before relying on `/competeupdate`. It is the
+7. **File ten signals by hand** before relying on `/competeupdate`. It is the
    fastest way to find out whether your confidence rules and shelf lives are set
    sensibly.
 
